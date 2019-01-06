@@ -15,6 +15,16 @@ public struct Projection<State, EventSet>: PublisherType, ObservableType {
   public let publish: Publisher
   /// Read the current state
   public let read: () -> State
+
+  public init(
+    subscribe: @escaping (_ listener: @escaping Subscription<State>.Listener) -> Subscription<State>,
+    publish: @escaping Publisher,
+    read: @escaping () -> State
+  ) {
+    self.subscribe = subscribe
+    self.publish = publish
+    self.read = read
+  }
 }
 
 public extension Projection {
