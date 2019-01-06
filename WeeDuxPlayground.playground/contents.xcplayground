@@ -3,5 +3,6 @@
     <pages>
         <page name='Observable State'/>
         <page name='Events'/>
+        <page name='Middleware'/>
     </pages>
 </playground>
