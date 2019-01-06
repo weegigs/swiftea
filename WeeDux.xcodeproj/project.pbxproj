@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0AA264E021E18A1C00ED7582 /* Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA264DF21E18A1C00ED7582 /* Combine.swift */; };
 		0AEF06E721DEF1D7005DD460 /* WeeDux.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AEF06E521DEF1D7005DD460 /* WeeDux.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0AEF070221DEF2D7005DD460 /* Dispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF06FD21DEF2D6005DD460 /* Dispatcher.swift */; };
 		0AEF070321DEF2D7005DD460 /* MultiReaderSingleWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF06FE21DEF2D6005DD460 /* MultiReaderSingleWriter.swift */; };
@@ -37,6 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0AA264DF21E18A1C00ED7582 /* Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Combine.swift; sourceTree = "<group>"; };
 		0AEF06E221DEF1D7005DD460 /* WeeDux.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WeeDux.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AEF06E521DEF1D7005DD460 /* WeeDux.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WeeDux.h; sourceTree = "<group>"; };
 		0AEF06E621DEF1D7005DD460 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 				0AEF072521DEFE5B005DD460 /* Internal */,
 				0AEF06ED21DEF23C005DD460 /* Supporting Files */,
 				0AEF071021DEF640005DD460 /* Test Support */,
+				0AA264DF21E18A1C00ED7582 /* Combine.swift */,
 			);
 			path = WeeDux;
 			sourceTree = "<group>";
@@ -284,6 +287,7 @@
 				0AEF070221DEF2D7005DD460 /* Dispatcher.swift in Sources */,
 				0AEF072D21E00B79005DD460 /* Observable.swift in Sources */,
 				0AEF070321DEF2D7005DD460 /* MultiReaderSingleWriter.swift in Sources */,
+				0AA264E021E18A1C00ED7582 /* Combine.swift in Sources */,
 				0AEF070421DEF2D7005DD460 /* Reducer.swift in Sources */,
 				0AEF072721DF0130005DD460 /* Noop.swift in Sources */,
 			);

@@ -21,14 +21,7 @@ public func combineReducers<State, EventSet>(
   return combineReducers(reducers: [first, second] + rest)
 }
 
-precedencegroup CombinePrecedence {
-  associativity: left
-  higherThan: AssignmentPrecedence
-}
-
-infix operator <*>: CombinePrecedence
-
-public func <*> <State, EventSet>(
+public func <> <State, EventSet>(
   _ first: @escaping Reducer<State, EventSet>,
   _ second: @escaping Reducer<State, EventSet>
 ) -> Reducer<State, EventSet> {

@@ -31,4 +31,4 @@ let divideReducer = { (state: Int, event: MathEvent) -> Int in
   return state / factor
 }
 
-public let mathReducer = incrementReducer <*> decrementReducer <*> multiplyReducer <*> divideReducer
+public let mathReducer = incrementReducer <> decrementReducer <> multiplyReducer <> divideReducer

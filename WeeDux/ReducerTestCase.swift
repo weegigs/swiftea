@@ -32,7 +32,7 @@ class ReducerTestCase: XCTestCase {
   }
 
   func testCombineOperater() {
-    let reducer = add <*> augment("a") <*> augment("b")
+    let reducer = add <> augment("a") <> augment("b")
     let result = reducer(["one"], "two")
 
     XCTAssert(result == ["one", "two", "two-a", "two-b"])
