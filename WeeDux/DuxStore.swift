@@ -4,8 +4,8 @@
 //
 
 public struct DuxStore<State, EventSet>: EventStoreType, ObservableType, DispatcherType {
-  public let listen: Projection<State, EventSet>.Source
-  public let subscribe: (@escaping (State) -> Void) -> Subscription<State>
+  public let listen: Projection<State, EventSet>.Source<EventSet>
+  public let subscribe: Projection<State, EventSet>.Source<State>
   public let read: () -> State
 
   public let publish: Projection<State, EventSet>.Sink

@@ -8,11 +8,11 @@ import Foundation
 public struct Projection<State, EventSet>: EventStoreType, ObservableType {
   public typealias CompletionHandler = (_ state: State) -> Void
   public typealias Sink = (_ event: EventSet, _ completion: @escaping CompletionHandler) -> Void
-  public typealias Source = (_ listener: @escaping Subscription<EventSet>.Listener) -> Subscription<EventSet>
+  public typealias Source<T> = (_ listener: @escaping Subscription<T>.Listener) -> Subscription<T>
 
-  public let listen: (_ listener: @escaping Subscription<EventSet>.Listener) -> Subscription<EventSet>
+  public let listen: Source<EventSet>
   /// Subscribe to view updates
-  public let subscribe: (_ listener: @escaping Subscription<State>.Listener) -> Subscription<State>
+  public let subscribe: Source<State>
   /// Disptch an update event
   public let publish: Sink
   /// Read the current state

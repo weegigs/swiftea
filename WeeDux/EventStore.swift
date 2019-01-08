@@ -18,7 +18,7 @@ public protocol EventStoreType {
 
   /// Disptch an update event
   var publish: Sink { get }
-  var listen: Source { get }
+  var listen: Source<EventSet> { get }
 }
 
 public extension EventStoreType {
