@@ -120,4 +120,27 @@ class ProjectionTestCase: XCTestCase {
     XCTAssertEqual(state, [0, 1, 2, 3])
     XCTAssertEqual(projection.read(), 3)
   }
+
+  func testListenersAreNotified() {
+    let expectation = XCTestExpectation(description: "events delivered")
+    var state: [MathEvent] = []
+
+    let subsciption = projection.listen {
+      state.append($0)
+      if state.count == 3 {
+        expectation.fulfill()
+      }
+    }
+
+    projection.publish(.increment(1))
+    projection.publish(.increment(2))
+    projection.publish(.increment(3))
+
+    wait(for: [expectation], timeout: 1)
+
+    subsciption.unsubscribe()
+
+    XCTAssertEqual(state.count, 3)
+    XCTAssertEqual(state, [.increment(1), .increment(2), .increment(3)])
+  }
 }

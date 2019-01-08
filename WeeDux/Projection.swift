@@ -5,22 +5,26 @@
 
 import Foundation
 
-public struct Projection<State, EventSet>: PublisherType, ObservableType {
+public struct Projection<State, EventSet>: EventStoreType, ObservableType {
   public typealias CompletionHandler = (_ state: State) -> Void
-  public typealias Publisher = (_ event: EventSet, _ completion: @escaping CompletionHandler) -> Void
+  public typealias Sink = (_ event: EventSet, _ completion: @escaping CompletionHandler) -> Void
+  public typealias Source = (_ listener: @escaping Subscription<EventSet>.Listener) -> Subscription<EventSet>
 
+  public let listen: (_ listener: @escaping Subscription<EventSet>.Listener) -> Subscription<EventSet>
   /// Subscribe to view updates
   public let subscribe: (_ listener: @escaping Subscription<State>.Listener) -> Subscription<State>
   /// Disptch an update event
-  public let publish: Publisher
+  public let publish: Sink
   /// Read the current state
   public let read: () -> State
 
   public init(
+    listen: @escaping (_ listener: @escaping Subscription<EventSet>.Listener) -> Subscription<EventSet>,
     subscribe: @escaping (_ listener: @escaping Subscription<State>.Listener) -> Subscription<State>,
-    publish: @escaping Publisher,
+    publish: @escaping Sink,
     read: @escaping () -> State
   ) {
+    self.listen = listen
     self.subscribe = subscribe
     self.publish = publish
     self.read = read
@@ -31,19 +35,19 @@ public extension Projection {
   public init(state: State, reducer: @escaping Reducer<State, EventSet>) {
     let view = ReducerProjection(state: state, reducer: reducer)
 
-    self.init(subscribe: view.subscribe, publish: view.publish, read: view.read)
+    self.init(listen: view.listen, subscribe: view.subscribe, publish: view.publish, read: view.read)
   }
 }
 
 private class ReducerProjection<State, EventSet> {
   typealias Subscriber<State> = (State) -> Void
 
-  private struct ReducerSubscription {
-    let subscriber: Subscriber<State>
+  private struct ReducerSubscription<T> {
+    let subscriber: Subscriber<T>
     let remove: () -> Void
 
-    func notify(_ state: State) {
-      subscriber(state)
+    func notify(_ update: T) {
+      subscriber(update)
     }
 
     func unsubscribe() {
@@ -55,7 +59,9 @@ private class ReducerProjection<State, EventSet> {
   private let notifications: DispatchQueue
   private let reducer: Reducer<State, EventSet>
 
-  private var subscriptions: MultiReaderSingleWriter<[String: ReducerSubscription]>
+  private var subscriptions: MultiReaderSingleWriter<[String: ReducerSubscription<State>]>
+  private var listeners: MultiReaderSingleWriter<[String: ReducerSubscription<EventSet>]>
+
   private var state: State {
     didSet { notify() }
   }
@@ -64,6 +70,7 @@ private class ReducerProjection<State, EventSet> {
     queue = DispatchQueue(label: "com.weegigs.projection-\(UUID().uuidString)", attributes: .concurrent)
     notifications = DispatchQueue(label: "\(queue.label).notifications")
     subscriptions = MultiReaderSingleWriter([:])
+    listeners = MultiReaderSingleWriter([:])
 
     self.reducer = reducer
     self.state = state
@@ -91,6 +98,23 @@ private class ReducerProjection<State, EventSet> {
     return Subscription(unsubscribe: subscription.unsubscribe)
   }
 
+  func listen(subscriber: @escaping (EventSet) -> Void) -> Subscription<EventSet> {
+    let key = UUID().uuidString
+    let subscription = ReducerSubscription(subscriber: subscriber) { [weak self] in
+      guard let self = self else { return }
+
+      self.subscriptions.update { subscriptions in
+        subscriptions.removeValue(forKey: key)
+      }
+    }
+
+    listeners.update { subscriptions in
+      subscriptions[key] = subscription
+    }
+
+    return Subscription(unsubscribe: subscription.unsubscribe)
+  }
+
   func publish(event: EventSet, completed: @escaping (State) -> Void) {
     queue.async(flags: .barrier) {
       let state = self.reducer(self.state, event)
@@ -98,6 +122,10 @@ private class ReducerProjection<State, EventSet> {
 
       self.notifications.async {
         completed(state)
+      }
+
+      self.notifications.async {
+        self.notify(event: event)
       }
     }
   }
@@ -114,6 +142,15 @@ private class ReducerProjection<State, EventSet> {
     notifications.async {
       for (_, subscription) in subscriptions {
         subscription.notify(state)
+      }
+    }
+  }
+
+  private func notify(event: EventSet) {
+    let listeners = self.listeners.value
+    notifications.async {
+      for (_, listener) in listeners {
+        listener.notify(event)
       }
     }
   }

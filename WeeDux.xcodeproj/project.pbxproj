@@ -24,7 +24,7 @@
 		0AEF072D21E00B79005DD460 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF072C21E00B79005DD460 /* Observable.swift */; };
 		0AEF072F21E00C37005DD460 /* ObservableTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF072E21E00C37005DD460 /* ObservableTestCase.swift */; };
 		0AEF073121E02774005DD460 /* TestObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF073021E02774005DD460 /* TestObservable.swift */; };
-		0AEF073321E0430B005DD460 /* Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF073221E0430A005DD460 /* Publisher.swift */; };
+		0AEF073321E0430B005DD460 /* EventStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF073221E0430A005DD460 /* EventStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,7 +59,7 @@
 		0AEF072C21E00B79005DD460 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		0AEF072E21E00C37005DD460 /* ObservableTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableTestCase.swift; sourceTree = "<group>"; };
 		0AEF073021E02774005DD460 /* TestObservable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestObservable.swift; sourceTree = "<group>"; };
-		0AEF073221E0430A005DD460 /* Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Publisher.swift; sourceTree = "<group>"; };
+		0AEF073221E0430A005DD460 /* EventStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,7 +106,7 @@
 				0AEF070821DEF300005DD460 /* DispatcherTestCase.swift */,
 				0AEF070021DEF2D7005DD460 /* Projection.swift */,
 				0AEF070A21DEF300005DD460 /* ProjectionTestCase.swift */,
-				0AEF073221E0430A005DD460 /* Publisher.swift */,
+				0AEF073221E0430A005DD460 /* EventStore.swift */,
 				0AEF06FF21DEF2D6005DD460 /* Reducer.swift */,
 				0AEF072821DF177D005DD460 /* ReducerTestCase.swift */,
 				0AEF070121DEF2D7005DD460 /* DuxStore.swift */,
@@ -281,7 +281,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0AEF073321E0430B005DD460 /* Publisher.swift in Sources */,
+				0AEF073321E0430B005DD460 /* EventStore.swift in Sources */,
 				0AEF070621DEF2D7005DD460 /* DuxStore.swift in Sources */,
 				0AEF070521DEF2D7005DD460 /* Projection.swift in Sources */,
 				0AEF070221DEF2D7005DD460 /* Dispatcher.swift in Sources */,

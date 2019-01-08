@@ -3,11 +3,12 @@
 //  Copyright © 2018 Kevin O'Neill. All rights reserved.
 //
 
-public struct DuxStore<State, EventSet>: PublisherType, ObservableType, ExecutorType {
+public struct DuxStore<State, EventSet>: EventStoreType, ObservableType, ExecutorType {
+  public let listen: Projection<State, EventSet>.Source
   public let subscribe: (@escaping (State) -> Void) -> Subscription<State>
   public let read: () -> State
 
-  public let publish: Projection<State, EventSet>.Publisher
+  public let publish: Projection<State, EventSet>.Sink
   public let execute: (@escaping Dispatcher<State, EventSet>.Thunk) -> Void
 }
 
@@ -18,6 +19,7 @@ public extension DuxStore {
     let store = SingleProjectionStore(projection: projection, dispatcher: dispatcher)
 
     self.init(
+      listen: store.listen,
       subscribe: store.subscribe,
       read: store.read,
       publish: store.publish,
@@ -35,6 +37,10 @@ struct SingleProjectionStore<State, EventSet> {
     self.dispatcher = dispatcher
   }
 
+  func listen(listener: @escaping (EventSet) -> Void) -> Subscription<EventSet> {
+    return projection.listen(listener)
+  }
+
   func subscribe(subscriber: @escaping (State) -> Void) -> Subscription<State> {
     return projection.subscribe(subscriber)
   }
@@ -44,7 +50,7 @@ struct SingleProjectionStore<State, EventSet> {
   }
 
   func publish(event: EventSet, onComplete: @escaping (State) -> Void) {
-    dispatcher.publish(event, onComplete)
+    projection.publish(event, onComplete)
   }
 
   func execute(command: @escaping Dispatcher<State, EventSet>.Thunk) {

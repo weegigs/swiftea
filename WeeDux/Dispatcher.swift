@@ -13,11 +13,10 @@ public protocol ExecutorType {
   var execute: (@escaping Dispatcher<State, EventSet>.Thunk) -> Void { get }
 }
 
-public struct Dispatcher<State, EventSet>: ExecutorType, PublisherType {
-  public typealias Publisher = Projection<State, EventSet>.Publisher
+public struct Dispatcher<State, EventSet>: ExecutorType {
+  public typealias Publisher = Projection<State, EventSet>.Sink
   public typealias Thunk = (@escaping () -> State, @escaping Publisher) -> Void
 
-  public let publish: Publisher
   public let execute: (@escaping Thunk) -> Void
 }
 
@@ -26,7 +25,6 @@ public extension Dispatcher {
     let dispatcher = SingleProjectionDispatcher(projection: projection)
 
     self.init(
-      publish: dispatcher.publish,
       execute: dispatcher.execute
     )
   }

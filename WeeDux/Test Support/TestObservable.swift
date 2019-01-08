@@ -10,14 +10,16 @@ import Foundation
 
 import WeeDux
 
-class TestObservable<State>: ObservableType, PublisherType {
+class TestObservable<State>: ObservableType, EventStoreType {
   typealias EventSet = State
 
   private let initial: State
   private let queue: DispatchQueue
 
   private var subscriber: Subscription<State>.Listener?
+  private var listener: Subscription<EventSet>.Listener?
 
+  lazy var listen: (@escaping (State) -> Void) -> Subscription<State> = _listen
   lazy var subscribe: (@escaping (State) -> Void) -> Subscription<State> = _subscribe
   lazy var publish: (State, @escaping (State) -> Void) -> Void = _publish
 
@@ -49,6 +51,18 @@ class TestObservable<State>: ObservableType, PublisherType {
 
     return Subscription {
       self.subscriber = nil
+    }
+  }
+
+  private func _listen(_ listener: @escaping (EventSet) -> Void) -> Subscription<EventSet> {
+    if nil != self.listener {
+      fatalError("test only supports a single listener")
+    }
+
+    self.listener = listener
+
+    return Subscription {
+      self.listener = nil
     }
   }
 }

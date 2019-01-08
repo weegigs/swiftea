@@ -7,7 +7,7 @@
 
 @testable import WeeDux
 
-enum MathEvent {
+enum MathEvent: Equatable {
   case increment(_ amount: Int)
   case decrement(_ amount: Int)
   case multiply(_ factor: Int)

@@ -8,18 +8,20 @@
 
 import Foundation
 
-public protocol PublisherType {
+public protocol EventStoreType {
   typealias CompletionHandler = Projection<State, EventSet>.CompletionHandler
-  typealias Publisher = Projection<State, EventSet>.Publisher
+  typealias Sink = Projection<State, EventSet>.Sink
+  typealias Source = Projection<State, EventSet>.Source
 
   associatedtype State
   associatedtype EventSet
 
   /// Disptch an update event
-  var publish: Publisher { get }
+  var publish: Sink { get }
+  var listen: Source { get }
 }
 
-public extension PublisherType {
+public extension EventStoreType {
   public func publish(_ event: EventSet) {
     publish(event, noop)
   }
