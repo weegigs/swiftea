@@ -3,7 +3,7 @@
 //  Copyright © 2018 Kevin O'Neill. All rights reserved.
 //
 
-public struct DuxStore<State, EventSet>: EventStoreType, ObservableType, ExecutorType {
+public struct DuxStore<State, EventSet>: EventStoreType, ObservableType, DispatcherType {
   public let listen: Projection<State, EventSet>.Source
   public let subscribe: (@escaping (State) -> Void) -> Subscription<State>
   public let read: () -> State

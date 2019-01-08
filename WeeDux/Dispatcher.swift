@@ -6,14 +6,14 @@
 import Dispatch
 import Foundation
 
-public protocol ExecutorType {
+public protocol DispatcherType {
   associatedtype State
   associatedtype EventSet
 
   var execute: (@escaping Dispatcher<State, EventSet>.Thunk) -> Void { get }
 }
 
-public struct Dispatcher<State, EventSet>: ExecutorType {
+public struct Dispatcher<State, EventSet>: DispatcherType {
   public typealias Publisher = Projection<State, EventSet>.Sink
   public typealias Thunk = (@escaping () -> State, @escaping Publisher) -> Void
 
