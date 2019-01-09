@@ -81,6 +81,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0AA2653121E5642100ED7582 /* Operators */ = {
+			isa = PBXGroup;
+			children = (
+				0AA264DF21E18A1C00ED7582 /* Combine.swift */,
+			);
+			path = Operators;
+			sourceTree = "<group>";
+		};
 		0AEF06D821DEF1D7005DD460 = {
 			isa = PBXGroup;
 			children = (
@@ -104,19 +112,19 @@
 			children = (
 				0AEF06FD21DEF2D6005DD460 /* Dispatcher.swift */,
 				0AEF070821DEF300005DD460 /* DispatcherTestCase.swift */,
-				0AEF070021DEF2D7005DD460 /* Projection.swift */,
-				0AEF070A21DEF300005DD460 /* ProjectionTestCase.swift */,
-				0AEF073221E0430A005DD460 /* EventStore.swift */,
-				0AEF06FF21DEF2D6005DD460 /* Reducer.swift */,
-				0AEF072821DF177D005DD460 /* ReducerTestCase.swift */,
 				0AEF070121DEF2D7005DD460 /* DuxStore.swift */,
 				0AEF072A21DF36B7005DD460 /* DuxStoreTestCase.swift */,
+				0AEF073221E0430A005DD460 /* EventStore.swift */,
 				0AEF072C21E00B79005DD460 /* Observable.swift */,
 				0AEF072E21E00C37005DD460 /* ObservableTestCase.swift */,
+				0AEF070021DEF2D7005DD460 /* Projection.swift */,
+				0AEF070A21DEF300005DD460 /* ProjectionTestCase.swift */,
+				0AEF06FF21DEF2D6005DD460 /* Reducer.swift */,
+				0AEF072821DF177D005DD460 /* ReducerTestCase.swift */,
 				0AEF072521DEFE5B005DD460 /* Internal */,
+				0AA2653121E5642100ED7582 /* Operators */,
 				0AEF06ED21DEF23C005DD460 /* Supporting Files */,
 				0AEF071021DEF640005DD460 /* Test Support */,
-				0AA264DF21E18A1C00ED7582 /* Combine.swift */,
 			);
 			path = WeeDux;
 			sourceTree = "<group>";
@@ -124,8 +132,8 @@
 		0AEF06ED21DEF23C005DD460 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				0AEF06E521DEF1D7005DD460 /* WeeDux.h */,
 				0AEF06E621DEF1D7005DD460 /* Info.plist */,
+				0AEF06E521DEF1D7005DD460 /* WeeDux.h */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
