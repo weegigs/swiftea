@@ -6,9 +6,10 @@ public struct ToDo: Equatable {
     case completed(on: Date)
   }
 
-  var id: String
-  var title: String
-  var status: ToDoStatus
+  public let id: String
+  
+  public var title: String
+  public var status: ToDoStatus
 
   public init(title: String) {
     id = UUID().uuidString

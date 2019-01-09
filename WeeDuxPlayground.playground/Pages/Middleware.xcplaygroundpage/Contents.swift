@@ -20,9 +20,9 @@ let projection = Projection<Int, MathEvent>(state: 0, reducer: mathReducer)
  Let's create the classic logging Middleware
  */
 
-//: First something to wrap a `Projection<State, EventSet>.Publisher` that intecepts the publish method and prints the event and new state
+//: First something to wrap a `Projection<State, EventSet>.Sink` that intecepts the publish method and prints the event and new state
 
-func logger<State, EventSet>(_ recorded: @escaping Projection<State, EventSet>.Publisher) -> Projection<State, EventSet>.Publisher {
+func logger<State, EventSet>(_ recorded: @escaping Projection<State, EventSet>.Sink) -> Projection<State, EventSet>.Sink {
   return { event, handler in
     let log = { (state: State) in
       print("event: \(event) -> state: \(state)")
@@ -52,7 +52,7 @@ class Recorder<State, EventSet> {
     events.append(event)
   }
 
-  func playback(_ publisher: Projection<State, EventSet>.Publisher) -> State? {
+  func playback(_ publisher: Projection<State, EventSet>.Sink) -> State? {
     var result: State? = nil
     for event in events {
       let semaphore = DispatchSemaphore(value: 0)
@@ -67,7 +67,7 @@ class Recorder<State, EventSet> {
   }
 }
 
-func recorded<State, EventSet>(publisher: @escaping Projection<State, EventSet>.Publisher, recorder: Recorder<State, EventSet>) -> Projection<State, EventSet>.Publisher {
+func recorded<State, EventSet>(publisher: @escaping Projection<State, EventSet>.Sink, recorder: Recorder<State, EventSet>) -> Projection<State, EventSet>.Sink {
   return { event, handler in
     let record = { (state: State) in
       recorder.record(event)
