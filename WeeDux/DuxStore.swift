@@ -4,12 +4,14 @@
 //
 
 public struct DuxStore<State, EventSet>: EventStoreType, ObservableType, DispatcherType {
+  public typealias Command = Dispatcher<State, EventSet>.Thunk
+
   public let listen: Projection<State, EventSet>.Source<EventSet>
   public let subscribe: Projection<State, EventSet>.Source<State>
   public let read: () -> State
 
   public let publish: Projection<State, EventSet>.Sink
-  public let execute: (@escaping Dispatcher<State, EventSet>.Thunk) -> Void
+  public let execute: (@escaping Command) -> Void
 }
 
 public extension DuxStore {
