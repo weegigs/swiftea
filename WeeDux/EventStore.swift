@@ -26,7 +26,7 @@ public extension EventStoreType {
     publish(event, noop)
   }
 
-  public func publish(sync event: EventSet) -> State {
+  @discardableResult public func publish(sync event: EventSet) -> State {
     let semaphore = DispatchSemaphore(value: 0)
     var result: State!
     publish(event) {
