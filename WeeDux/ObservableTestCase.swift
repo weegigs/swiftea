@@ -54,7 +54,7 @@ class ObservableTestCase: XCTestCase {
     XCTAssert(result == -1)
   }
 
-  func testUniqueValues() {
+  func testDistinct() {
     let projection = Projection<Int, MathEvent>(state: 0) { state, event in
       guard
         case let .increment(value) = event,
@@ -70,7 +70,7 @@ class ObservableTestCase: XCTestCase {
     var state: Int = 0
 
     var last = -1
-    let subsciption = projection.unique().subscribe {
+    let subsciption = projection.distinct().subscribe {
       state = $0
       XCTAssertNotEqual(state, last)
       last = state
@@ -95,7 +95,7 @@ class ObservableTestCase: XCTestCase {
     XCTAssertEqual(projection.read(), 6)
   }
 
-  func testSubscribeOnQueue() {
+  func testDeliverOnQueue() {
     let expectation = XCTestExpectation(description: "counter incremented")
 
     let observable = TestObservable(0)
@@ -104,6 +104,30 @@ class ObservableTestCase: XCTestCase {
       return observable
         .deliver(on: .main)
         .subscribe { value in
+          XCTAssert(Thread.isMainThread)
+          if value == 1 {
+            expectation.fulfill()
+          }
+        }
+    }
+
+    DispatchQueue.global(qos: .background).sync {
+      observable.publish(1)
+    }
+
+    wait(for: [expectation], timeout: 10.0)
+
+    subsciption.unsubscribe()
+  }
+
+  func testSubscribeOnQueue() {
+    let expectation = XCTestExpectation(description: "counter incremented")
+
+    let observable = TestObservable(0)
+
+    let subsciption = DispatchQueue.global(qos: .background).sync {
+      return observable
+        .subscribe(on: .main) { value in
           XCTAssert(Thread.isMainThread)
           if value == 1 {
             expectation.fulfill()

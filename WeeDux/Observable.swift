@@ -15,11 +15,11 @@ public struct Subscription<State> {
 public protocol ObservableType {
   associatedtype State
 
-  var subscribe: (_ listener: @escaping Subscription<State>.Listener) -> Subscription<State> { get }
+  var subscribe: (_ subscriber: @escaping Subscription<State>.Listener) -> Subscription<State> { get }
 }
 
 public struct Observable<State>: ObservableType {
-  public let subscribe: (_ listener: @escaping Subscription<State>.Listener) -> Subscription<State>
+  public let subscribe: (_ subscriber: @escaping Subscription<State>.Listener) -> Subscription<State>
 }
 
 public extension ObservableType {
@@ -49,7 +49,7 @@ public extension ObservableType {
 }
 
 public extension ObservableType where State: Equatable {
-  public func unique() -> Observable<State> {
+  public func distinct() -> Observable<State> {
     return Observable { subscriber in
       var previous: State?
 
@@ -78,5 +78,11 @@ public extension ObservableType {
         }
       }
     }
+  }
+}
+
+public extension ObservableType {
+  public func subscribe(on queue: DispatchQueue, subscriber: @escaping Subscription<State>.Listener) -> Subscription<State> {
+    return deliver(on: queue).subscribe(subscriber)
   }
 }
