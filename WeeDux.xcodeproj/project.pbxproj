@@ -7,24 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A3716D921E80B1700BC1CC8 /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3716D821E80B1700BC1CC8 /* Command.swift */; };
+		0A3716DB21E865C500BC1CC8 /* EventProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3716DA21E865C500BC1CC8 /* EventProcessor.swift */; };
 		0AA264E021E18A1C00ED7582 /* Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA264DF21E18A1C00ED7582 /* Combine.swift */; };
 		0AEF06E721DEF1D7005DD460 /* WeeDux.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AEF06E521DEF1D7005DD460 /* WeeDux.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0AEF070221DEF2D7005DD460 /* Dispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF06FD21DEF2D6005DD460 /* Dispatcher.swift */; };
+		0AEF070221DEF2D7005DD460 /* Reactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF06FD21DEF2D6005DD460 /* Reactor.swift */; };
 		0AEF070321DEF2D7005DD460 /* MultiReaderSingleWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF06FE21DEF2D6005DD460 /* MultiReaderSingleWriter.swift */; };
-		0AEF070421DEF2D7005DD460 /* Reducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF06FF21DEF2D6005DD460 /* Reducer.swift */; };
-		0AEF070521DEF2D7005DD460 /* Projection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF070021DEF2D7005DD460 /* Projection.swift */; };
-		0AEF070621DEF2D7005DD460 /* DuxStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF070121DEF2D7005DD460 /* DuxStore.swift */; };
 		0AEF071C21DEFC96005DD460 /* WeeDux.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AEF06E221DEF1D7005DD460 /* WeeDux.framework */; };
-		0AEF072221DEFCD7005DD460 /* DispatcherTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF070821DEF300005DD460 /* DispatcherTestCase.swift */; };
-		0AEF072321DEFCD7005DD460 /* ProjectionTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF070A21DEF300005DD460 /* ProjectionTestCase.swift */; };
+		0AEF072221DEFCD7005DD460 /* ReactorTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF070821DEF300005DD460 /* ReactorTestCase.swift */; };
 		0AEF072421DEFCD7005DD460 /* Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF070921DEF300005DD460 /* Fixtures.swift */; };
-		0AEF072721DF0130005DD460 /* Noop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF072621DF0130005DD460 /* Noop.swift */; };
-		0AEF072921DF177D005DD460 /* ReducerTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF072821DF177D005DD460 /* ReducerTestCase.swift */; };
-		0AEF072B21DF36B7005DD460 /* DuxStoreTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF072A21DF36B7005DD460 /* DuxStoreTestCase.swift */; };
+		0AEF072921DF177D005DD460 /* EventProcessorTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF072821DF177D005DD460 /* EventProcessorTestCase.swift */; };
 		0AEF072D21E00B79005DD460 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF072C21E00B79005DD460 /* Observable.swift */; };
 		0AEF072F21E00C37005DD460 /* ObservableTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF072E21E00C37005DD460 /* ObservableTestCase.swift */; };
 		0AEF073121E02774005DD460 /* TestObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF073021E02774005DD460 /* TestObservable.swift */; };
-		0AEF073321E0430B005DD460 /* EventStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF073221E0430A005DD460 /* EventStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,28 +33,23 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0A3716D821E80B1700BC1CC8 /* Command.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
+		0A3716DA21E865C500BC1CC8 /* EventProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventProcessor.swift; sourceTree = "<group>"; };
 		0AA264DF21E18A1C00ED7582 /* Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Combine.swift; sourceTree = "<group>"; };
 		0AEF06E221DEF1D7005DD460 /* WeeDux.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WeeDux.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AEF06E521DEF1D7005DD460 /* WeeDux.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WeeDux.h; sourceTree = "<group>"; };
 		0AEF06E621DEF1D7005DD460 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0AEF06FD21DEF2D6005DD460 /* Dispatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dispatcher.swift; sourceTree = "<group>"; };
+		0AEF06FD21DEF2D6005DD460 /* Reactor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reactor.swift; sourceTree = "<group>"; };
 		0AEF06FE21DEF2D6005DD460 /* MultiReaderSingleWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiReaderSingleWriter.swift; sourceTree = "<group>"; };
-		0AEF06FF21DEF2D6005DD460 /* Reducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reducer.swift; sourceTree = "<group>"; };
-		0AEF070021DEF2D7005DD460 /* Projection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Projection.swift; sourceTree = "<group>"; };
-		0AEF070121DEF2D7005DD460 /* DuxStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuxStore.swift; sourceTree = "<group>"; };
-		0AEF070821DEF300005DD460 /* DispatcherTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DispatcherTestCase.swift; sourceTree = "<group>"; };
+		0AEF070821DEF300005DD460 /* ReactorTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactorTestCase.swift; sourceTree = "<group>"; };
 		0AEF070921DEF300005DD460 /* Fixtures.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fixtures.swift; sourceTree = "<group>"; };
-		0AEF070A21DEF300005DD460 /* ProjectionTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectionTestCase.swift; sourceTree = "<group>"; };
 		0AEF071221DEF7C5005DD460 /* WeeDuxPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = WeeDuxPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		0AEF071721DEFC96005DD460 /* WeeDuxTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WeeDuxTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AEF071B21DEFC96005DD460 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0AEF072621DF0130005DD460 /* Noop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Noop.swift; sourceTree = "<group>"; };
-		0AEF072821DF177D005DD460 /* ReducerTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReducerTestCase.swift; sourceTree = "<group>"; };
-		0AEF072A21DF36B7005DD460 /* DuxStoreTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuxStoreTestCase.swift; sourceTree = "<group>"; };
+		0AEF072821DF177D005DD460 /* EventProcessorTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventProcessorTestCase.swift; sourceTree = "<group>"; };
 		0AEF072C21E00B79005DD460 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		0AEF072E21E00C37005DD460 /* ObservableTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableTestCase.swift; sourceTree = "<group>"; };
 		0AEF073021E02774005DD460 /* TestObservable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestObservable.swift; sourceTree = "<group>"; };
-		0AEF073221E0430A005DD460 /* EventStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,17 +100,13 @@
 		0AEF06E421DEF1D7005DD460 /* WeeDux */ = {
 			isa = PBXGroup;
 			children = (
-				0AEF06FD21DEF2D6005DD460 /* Dispatcher.swift */,
-				0AEF070821DEF300005DD460 /* DispatcherTestCase.swift */,
-				0AEF070121DEF2D7005DD460 /* DuxStore.swift */,
-				0AEF072A21DF36B7005DD460 /* DuxStoreTestCase.swift */,
-				0AEF073221E0430A005DD460 /* EventStore.swift */,
+				0A3716D821E80B1700BC1CC8 /* Command.swift */,
+				0A3716DA21E865C500BC1CC8 /* EventProcessor.swift */,
+				0AEF072821DF177D005DD460 /* EventProcessorTestCase.swift */,
 				0AEF072C21E00B79005DD460 /* Observable.swift */,
 				0AEF072E21E00C37005DD460 /* ObservableTestCase.swift */,
-				0AEF070021DEF2D7005DD460 /* Projection.swift */,
-				0AEF070A21DEF300005DD460 /* ProjectionTestCase.swift */,
-				0AEF06FF21DEF2D6005DD460 /* Reducer.swift */,
-				0AEF072821DF177D005DD460 /* ReducerTestCase.swift */,
+				0AEF06FD21DEF2D6005DD460 /* Reactor.swift */,
+				0AEF070821DEF300005DD460 /* ReactorTestCase.swift */,
 				0AEF072521DEFE5B005DD460 /* Internal */,
 				0AA2653121E5642100ED7582 /* Operators */,
 				0AEF06ED21DEF23C005DD460 /* Supporting Files */,
@@ -152,7 +138,6 @@
 			isa = PBXGroup;
 			children = (
 				0AEF06FE21DEF2D6005DD460 /* MultiReaderSingleWriter.swift */,
-				0AEF072621DF0130005DD460 /* Noop.swift */,
 			);
 			path = Internal;
 			sourceTree = "<group>";
@@ -289,15 +274,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0AEF073321E0430B005DD460 /* EventStore.swift in Sources */,
-				0AEF070621DEF2D7005DD460 /* DuxStore.swift in Sources */,
-				0AEF070521DEF2D7005DD460 /* Projection.swift in Sources */,
-				0AEF070221DEF2D7005DD460 /* Dispatcher.swift in Sources */,
+				0A3716D921E80B1700BC1CC8 /* Command.swift in Sources */,
+				0AEF070221DEF2D7005DD460 /* Reactor.swift in Sources */,
 				0AEF072D21E00B79005DD460 /* Observable.swift in Sources */,
 				0AEF070321DEF2D7005DD460 /* MultiReaderSingleWriter.swift in Sources */,
 				0AA264E021E18A1C00ED7582 /* Combine.swift in Sources */,
-				0AEF070421DEF2D7005DD460 /* Reducer.swift in Sources */,
-				0AEF072721DF0130005DD460 /* Noop.swift in Sources */,
+				0A3716DB21E865C500BC1CC8 /* EventProcessor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -306,12 +288,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				0AEF073121E02774005DD460 /* TestObservable.swift in Sources */,
-				0AEF072321DEFCD7005DD460 /* ProjectionTestCase.swift in Sources */,
-				0AEF072221DEFCD7005DD460 /* DispatcherTestCase.swift in Sources */,
+				0AEF072221DEFCD7005DD460 /* ReactorTestCase.swift in Sources */,
 				0AEF072F21E00C37005DD460 /* ObservableTestCase.swift in Sources */,
-				0AEF072921DF177D005DD460 /* ReducerTestCase.swift in Sources */,
+				0AEF072921DF177D005DD460 /* EventProcessorTestCase.swift in Sources */,
 				0AEF072421DEFCD7005DD460 /* Fixtures.swift in Sources */,
-				0AEF072B21DF36B7005DD460 /* DuxStoreTestCase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

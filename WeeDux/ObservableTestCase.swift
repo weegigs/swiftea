@@ -55,16 +55,7 @@ class ObservableTestCase: XCTestCase {
   }
 
   func testDistinct() {
-    let projection = Projection<Int, MathEvent>(state: 0) { state, event in
-      guard
-        case let .increment(value) = event,
-        value % 2 == 0
-      else {
-        return state
-      }
-
-      return state + value
-    }
+    let projection = TestObservable(0)
 
     let expectation = XCTestExpectation(description: "subscription delivered")
     var state: Int = 0
@@ -75,24 +66,23 @@ class ObservableTestCase: XCTestCase {
       XCTAssertNotEqual(state, last)
       last = state
       print(state)
-      if state == 6 {
+      if state == 3 {
         expectation.fulfill()
       }
     }
 
-    projection.publish(.increment(1))
-    projection.publish(.increment(2))
-    projection.publish(.increment(7))
-    projection.publish(.increment(2))
-    projection.publish(.increment(13))
-    projection.publish(.increment(2))
+    projection.push(1)
+    projection.push(2)
+    projection.push(2)
+    projection.push(2)
+    projection.push(13)
+    projection.push(3)
 
     wait(for: [expectation], timeout: 1)
 
     subsciption.unsubscribe()
 
-    XCTAssertEqual(state, 6)
-    XCTAssertEqual(projection.read(), 6)
+    XCTAssertEqual(projection.state, 3)
   }
 
   func testDeliverOnQueue() {
@@ -112,7 +102,7 @@ class ObservableTestCase: XCTestCase {
     }
 
     DispatchQueue.global(qos: .background).sync {
-      observable.publish(1)
+      observable.push(1)
     }
 
     wait(for: [expectation], timeout: 10.0)
@@ -136,7 +126,7 @@ class ObservableTestCase: XCTestCase {
     }
 
     DispatchQueue.global(qos: .background).sync {
-      observable.publish(1)
+      observable.push(1)
     }
 
     wait(for: [expectation], timeout: 10.0)

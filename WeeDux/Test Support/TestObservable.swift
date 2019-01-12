@@ -10,32 +10,29 @@ import Foundation
 
 import WeeDux
 
-class TestObservable<State>: ObservableType, EventStoreType {
-  typealias EventSet = State
+class TestObservable<State>: ObservableType {
+  typealias Event = State
 
-  private let initial: State
   private let queue: DispatchQueue
 
   private var subscriber: Subscription<State>.Listener?
-  private var listener: Subscription<EventSet>.Listener?
 
-  lazy var listen: (@escaping (State) -> Void) -> Subscription<State> = _listen
+  private(set) var state: State
   lazy var subscribe: (@escaping (State) -> Void) -> Subscription<State> = _subscribe
-  lazy var publish: (State, @escaping (State) -> Void) -> Void = _publish
 
   init(_ initial: State, queue: DispatchQueue = DispatchQueue(label: "test")) {
-    self.initial = initial
+    state = initial
     self.queue = queue
   }
 
-  private func _publish(_ value: State, complete: @escaping (State) -> Void) {
+  func push(_ value: State) {
     guard let subscriber = subscriber else {
       return
     }
 
+    state = value
     queue.async {
-      subscriber(value)
-      complete(value)
+      subscriber(self.state)
     }
   }
 
@@ -46,23 +43,11 @@ class TestObservable<State>: ObservableType, EventStoreType {
 
     self.subscriber = subscriber
     queue.async {
-      subscriber(self.initial)
+      subscriber(self.state)
     }
 
     return Subscription {
       self.subscriber = nil
-    }
-  }
-
-  private func _listen(_ listener: @escaping (EventSet) -> Void) -> Subscription<EventSet> {
-    if nil != self.listener {
-      fatalError("test only supports a single listener")
-    }
-
-    self.listener = listener
-
-    return Subscription {
-      self.listener = nil
     }
   }
 }
