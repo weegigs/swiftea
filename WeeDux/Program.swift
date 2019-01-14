@@ -26,7 +26,7 @@ public struct Program<Environment, State, Event>: ObservableType {
 
 public extension Program {
   public init(state: State, environment: Environment, handler: @escaping EventHandler<Environment, State, Event>) {
-    let reactor = BaseReactor(state: state, environment: environment, handler: handler)
+    let reactor = BaseProgram(state: state, environment: environment, handler: handler)
 
     self.init(
       execute: reactor.execute,
@@ -39,7 +39,7 @@ public extension Program {
 
 // internal
 
-fileprivate class BaseReactor<Environment, State, EventSet> {
+fileprivate class BaseProgram<Environment, State, EventSet> {
   typealias Subscriber<State> = (State) -> Void
 
   private let updates: DispatchQueue
@@ -108,7 +108,7 @@ fileprivate class BaseReactor<Environment, State, EventSet> {
 
   func dispatch(event: EventSet) {
     updates.async(flags: .barrier) {
-      let (state, command) = self.handler(self.state, event)
+      let (state, command) = self.handler(self.environment, self.state, event)
 
       self.state = state
       self.execute(command: command)
