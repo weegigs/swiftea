@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0A34546421EC30E20071E8FE /* Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A34546321EC30E20071E8FE /* Fixtures.swift */; };
+		0A34546621EC51A90071E8FE /* Reducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A34546521EC51A90071E8FE /* Reducer.swift */; };
 		0A3716D921E80B1700BC1CC8 /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3716D821E80B1700BC1CC8 /* Command.swift */; };
 		0A3716DB21E865C500BC1CC8 /* EventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3716DA21E865C500BC1CC8 /* EventHandler.swift */; };
 		0AA264E021E18A1C00ED7582 /* Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA264DF21E18A1C00ED7582 /* Combine.swift */; };
@@ -36,6 +37,7 @@
 /* Begin PBXFileReference section */
 		0A34546221EBF8220071E8FE /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		0A34546321EC30E20071E8FE /* Fixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fixtures.swift; sourceTree = "<group>"; };
+		0A34546521EC51A90071E8FE /* Reducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reducer.swift; sourceTree = "<group>"; };
 		0A3716D821E80B1700BC1CC8 /* Command.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
 		0A3716DA21E865C500BC1CC8 /* EventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHandler.swift; sourceTree = "<group>"; };
 		0AA264DF21E18A1C00ED7582 /* Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Combine.swift; sourceTree = "<group>"; };
@@ -111,6 +113,7 @@
 				0AEF072E21E00C37005DD460 /* ObservableTestCase.swift */,
 				0AEF06FD21DEF2D6005DD460 /* Reactor.swift */,
 				0AEF070821DEF300005DD460 /* ReactorTestCase.swift */,
+				0A34546521EC51A90071E8FE /* Reducer.swift */,
 				0AEF072521DEFE5B005DD460 /* Internal */,
 				0AA2653121E5642100ED7582 /* Operators */,
 				0AEF06ED21DEF23C005DD460 /* Supporting Files */,
@@ -283,6 +286,7 @@
 				0AEF070221DEF2D7005DD460 /* Reactor.swift in Sources */,
 				0AEF072D21E00B79005DD460 /* Observable.swift in Sources */,
 				0AEF070321DEF2D7005DD460 /* MultiReaderSingleWriter.swift in Sources */,
+				0A34546621EC51A90071E8FE /* Reducer.swift in Sources */,
 				0AA264E021E18A1C00ED7582 /* Combine.swift in Sources */,
 				0A3716DB21E865C500BC1CC8 /* EventHandler.swift in Sources */,
 			);

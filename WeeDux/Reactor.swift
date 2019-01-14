@@ -102,13 +102,16 @@ fileprivate class BaseReactor<Environment, State, EventSet> {
 
   func dispatch(event: EventSet) {
     updates.async(flags: .barrier) {
-      let (state, effect) = self.handler(self.state, event)
+      let (state, command) = self.handler(self.state, event)
 
       self.state = state
+      self.run(command: command)
+    }
+  }
 
-      self.effects.async {
-        effect.run(self.environment, self.dispatch)
-      }
+  func run(command: Command<Environment, EventSet>) {
+    effects.async {
+      command.run(self.environment, self.dispatch)
     }
   }
 

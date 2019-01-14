@@ -4,11 +4,10 @@
 //
 
 public typealias EventHandler<Environment, State, Event> = (State, Event) -> (State, Command<Environment, Event>)
-public typealias Reducer<State, Event> = (State, Event) -> State
 
-func merge<Environment, State, Event>(processors: [EventHandler<Environment, State, Event>]) -> EventHandler<Environment, State, Event> {
+public func merge<Environment, State, Event>(_ handlers: [EventHandler<Environment, State, Event>]) -> EventHandler<Environment, State, Event> {
   return { (state: State, event: Event) in
-    let reduced: (State, [Command<Environment, Event>]) = processors.reduce((state, []), { current, processor in
+    let reduced: (State, [Command<Environment, Event>]) = handlers.reduce((state, []), { current, processor in
       let (state, commands) = current
       let (updated, command) = processor(state, event)
       return (updated, commands + [command])
@@ -18,25 +17,27 @@ func merge<Environment, State, Event>(processors: [EventHandler<Environment, Sta
   }
 }
 
-public func merge<Environment, State, Event>(
-  _ first: @escaping EventHandler<Environment, State, Event>,
-  _ second: @escaping EventHandler<Environment, State, Event>,
-  _ rest: EventHandler<Environment, State, Event>...
-) -> EventHandler<Environment, State, Event> {
-  return merge(processors: [first, second] + rest)
-}
-
 public func <> <Environment, State, Event>(
   _ first: @escaping EventHandler<Environment, State, Event>,
   _ second: @escaping EventHandler<Environment, State, Event>
 ) -> EventHandler<Environment, State, Event> {
-  return merge(processors: [first, second])
+  return merge([first, second])
 }
 
-public func from<Environment, State, Event>(reducer: @escaping Reducer<State, Event>) -> EventHandler<Environment, State, Event> {
+public func handler<Environment, State, Event>(_ reducer: @escaping Reducer<State, Event>) -> EventHandler<Environment, State, Event> {
   return { state, event in (reducer(state, event), .none) }
 }
 
-public func from<Environment, State, Event>(_ first: @escaping Reducer<State, Event>, _ rest: Reducer<State, Event>...) -> EventHandler<Environment, State, Event> {
-  return merge(processors: ([first] + rest).map { from(reducer: $0) })
+public func handler<Environment, State, Value, Event>(
+  _ path: WritableKeyPath<State, Value>,
+  _ handlers: EventHandler<Environment, Value, Event>...
+) -> EventHandler<Environment, State, Event> {
+  let handler = merge(handlers)
+  return { state, event in
+    let (update, commands) = handler(state[keyPath: path], event)
+    var updated = state
+    updated[keyPath: path] = update
+
+    return (updated, commands)
+  }
 }
