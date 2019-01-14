@@ -6,7 +6,7 @@ final class ReactorTestCase: XCTestCase {
   var reactor: Reactor<Int, MathEvent>!
 
   override func setUp() {
-    reactor = Reactor<Int, MathEvent>(state: 0, environment: [:], processor: math)
+    reactor = Reactor(state: 0, environment: (), handler: math)
   }
 
   func testExecute() {

@@ -1,6 +1,6 @@
 import WeeDux
 
-public enum MathEvent {
+public enum MathEvent: Equatable {
   case increment(_ amount: Int)
   case decrement(_ amount: Int)
   case multiply(_ factor: Int)
@@ -31,4 +31,5 @@ let divideReducer = { (state: Int, event: MathEvent) -> Int in
   return state / factor
 }
 
-public let mathReducer = incrementReducer <> decrementReducer <> multiplyReducer <> divideReducer
+public let math: EventHandler<Any, Int, MathEvent> = from(incrementReducer, decrementReducer, multiplyReducer, divideReducer)
+

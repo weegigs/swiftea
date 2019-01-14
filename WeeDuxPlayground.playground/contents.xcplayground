@@ -2,7 +2,7 @@
 <playground version='6.0' target-platform='ios' display-mode='raw' executeOnSourceChanges='false'>
     <pages>
         <page name='Observables'/>
-        <page name='EventStore'/>
+        <page name='Reactor'/>
         <page name='Middleware'/>
     </pages>
 </playground>

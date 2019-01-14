@@ -6,7 +6,7 @@
 import WeeDux
 import XCTest
 
-class ReducerTestCase: XCTestCase {
+class EventHandlerTestCase: XCTestCase {
   func augment(_ suffix: String) -> (([String], String) -> ([String], Command<Any, String>)) {
     return { (state, event) -> ([String], Command<Any, String>) in
       (state + ["\(event)-\(suffix)"], .none)

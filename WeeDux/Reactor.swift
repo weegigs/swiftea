@@ -9,16 +9,24 @@ public struct Reactor<State, Event>: ObservableType {
   public let dispatch: (Event) -> Void
   public let subscribe: (_ listener: @escaping Subscription<State>.Listener) -> Subscription<State>
   public let read: () -> State
+
+  public init(dispatch: @escaping (Event) -> Void,
+              subscribe: @escaping (_ listener: @escaping Subscription<State>.Listener) -> Subscription<State>,
+              read: @escaping () -> State) {
+    self.dispatch = dispatch
+    self.subscribe = subscribe
+    self.read = read
+  }
 }
 
 public extension Reactor {
-  public init<Environment>(state: State, environment: Environment, processor: @escaping EventProcessor<Environment, State, Event>) {
-    let dispatcher = BaseReactor(state: state, environment: environment, processor: processor)
+  public init<Environment>(state: State, environment: Environment, handler: @escaping EventHandler<Environment, State, Event>) {
+    let reactor = BaseReactor(state: state, environment: environment, handler: handler)
 
     self.init(
-      dispatch: dispatcher.dispatch,
-      subscribe: dispatcher.subscribe,
-      read: dispatcher.read
+      dispatch: reactor.dispatch,
+      subscribe: reactor.subscribe,
+      read: reactor.read
     )
   }
 }
@@ -32,8 +40,8 @@ fileprivate class BaseReactor<Environment, State, EventSet> {
   private let effects: DispatchQueue
   private let notifications: DispatchQueue
 
-  private let environment: Environment
-  private let processor: EventProcessor<Environment, State, EventSet>
+  fileprivate let environment: Environment
+  private let handler: EventHandler<Environment, State, EventSet>
 
   private var subscriptions: MultiReaderSingleWriter<[String: ReducerSubscription<State>]>
   private var state: State {
@@ -53,7 +61,7 @@ fileprivate class BaseReactor<Environment, State, EventSet> {
     }
   }
 
-  init(state: State, environment: Environment, processor: @escaping EventProcessor<Environment, State, EventSet>) {
+  init(state: State, environment: Environment, handler: @escaping EventHandler<Environment, State, EventSet>) {
     updates = DispatchQueue(label: "com.weegigs.dispatcher-\(UUID().uuidString)", attributes: .concurrent)
     effects = DispatchQueue(label: "\(updates.label).effects", attributes: .concurrent)
     notifications = DispatchQueue(label: "\(updates.label).notifications")
@@ -61,7 +69,7 @@ fileprivate class BaseReactor<Environment, State, EventSet> {
 
     self.state = state
     self.environment = environment
-    self.processor = processor
+    self.handler = handler
   }
 
   func subscribe(subscriber: @escaping (State) -> Void) -> Subscription<State> {
@@ -94,7 +102,7 @@ fileprivate class BaseReactor<Environment, State, EventSet> {
 
   func dispatch(event: EventSet) {
     updates.async(flags: .barrier) {
-      let (state, effect) = self.processor(self.state, event)
+      let (state, effect) = self.handler(self.state, event)
 
       self.state = state
 

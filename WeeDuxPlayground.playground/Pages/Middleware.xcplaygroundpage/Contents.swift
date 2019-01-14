@@ -9,7 +9,9 @@ import WeeDux
  */
 
 //: Projection Middleware
-let projection = Projection<Int, MathEvent>(state: 0, reducer: mathReducer)
+func create() -> Reactor<Int, MathEvent> {
+ return Reactor<Int, MathEvent>(state: 0, environment: (), handler: math)
+}
 
 /*:
  As discussed earlier, projection is the combination of the functions, `publish`, `subscribe` and  `read`
@@ -22,75 +24,51 @@ let projection = Projection<Int, MathEvent>(state: 0, reducer: mathReducer)
 
 //: First something to wrap a `Projection<State, EventSet>.Sink` that intecepts the publish method and prints the event and new state
 
-func logger<State, EventSet>(_ recorded: @escaping Projection<State, EventSet>.Sink) -> Projection<State, EventSet>.Sink {
-  return { event, handler in
-    let log = { (state: State) in
-      print("event: \(event) -> state: \(state)")
-      handler(state)
-    }
-
-    recorded(event, log)
-  }
+func logger<Event>(_ event: Event) -> Event {
+    print(event)
+    return event
 }
 
-//: Now a function that wraps a Projection logs events
+//: Now a function that wraps a dispatch function
 
-func logged<State, EventSet>(_ projection: Projection<State, EventSet>) -> Projection<State, EventSet> {
-  return Projection(subscribe: projection.subscribe, publish: logger(projection.publish), read: projection.read)
+func wrap<State, Event>(_ reactor: Reactor<State, Event>, _ f: @escaping (Event) -> Event ) -> Reactor<State, Event> {
+  return Reactor(dispatch: { reactor.dispatch(f($0)) }, subscribe: reactor.subscribe, read: reactor.read)
 }
 
-let loggedProjection = logged(Projection<Int, MathEvent>(state: 0, reducer: mathReducer))
-loggedProjection.publish(sync: .increment(1))
+
+let logged = wrap(create(), logger)
+logged.dispatch(.increment(1))
 
 
 //: What about recording
 
-class Recorder<State, EventSet> {
-  private(set) var events: [EventSet] = []
+class Recorder<State, Event> {
+  private(set) var events: [Event] = []
 
-  func record(_ event: EventSet) -> Void {
+  func record(_ event: Event) -> Event {
     events.append(event)
+    return event
   }
 
-  func playback(_ publisher: Projection<State, EventSet>.Sink) -> State? {
-    var result: State? = nil
+  func playback(to reactor: Reactor<State, Event>) -> State {
     for event in events {
-      let semaphore = DispatchSemaphore(value: 0)
-      publisher(event) { state in
-        result = state
-        semaphore.signal()
-      }
-      semaphore.wait()
+      reactor.dispatch(event)
     }
 
-    return result
+    return reactor.read()
   }
 }
 
-func recorded<State, EventSet>(publisher: @escaping Projection<State, EventSet>.Sink, recorder: Recorder<State, EventSet>) -> Projection<State, EventSet>.Sink {
-  return { event, handler in
-    let record = { (state: State) in
-      recorder.record(event)
-      handler(state)
-    }
-
-    publisher(event, record)
-  }
-}
-
-func recorded<State, EventSet>(projection: Projection<State, EventSet>, recorder: Recorder<State, EventSet>) -> Projection<State, EventSet> {
-  return Projection(subscribe: projection.subscribe, publish: recorded(publisher: projection.publish, recorder: recorder), read: projection.read)
-}
 
 let recorder = Recorder<Int, MathEvent>()
-let recordedProjection = recorded(projection: Projection<Int, MathEvent>(state: 0, reducer: mathReducer), recorder: recorder)
+let recorded = wrap(create(), recorder.record)
 
-recordedProjection.publish(sync: .increment(5))
-recordedProjection.publish(sync: .decrement(2))
+recorded.dispatch(.increment(5))
+recorded.dispatch(.decrement(2))
 
-let playbackProjection = logged(Projection<Int, MathEvent>(state: 0, reducer: mathReducer))
-recorder.playback(playbackProjection.publish)
+let playback = wrap(create(), logger)
+recorder.playback(to: playback)
 
-recordedProjection.read() == playbackProjection.read()
+recorded.read() == playback.read()
 
 //: [Next](@next)

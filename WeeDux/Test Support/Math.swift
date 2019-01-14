@@ -38,4 +38,4 @@ let divideReducer = { (state: Int, event: MathEvent) -> Int in
   return state / factor
 }
 
-let math: EventProcessor<Any, Int, MathEvent> = from(incrementReducer, decrementReducer, multiplyReducer, divideReducer)
+let math: EventHandler<Any, Int, MathEvent> = from(incrementReducer, decrementReducer, multiplyReducer, divideReducer)
