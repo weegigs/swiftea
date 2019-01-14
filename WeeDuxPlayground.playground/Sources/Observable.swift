@@ -1,30 +1,40 @@
 import WeeDux
 
-public class PlayObservable<State>: ObservableType, PublisherType {
-  public typealias EventSet = State
+public class TestObservable<State>: ObservableType {
+  typealias Event = State
 
-  private let initial: State
   private let queue: DispatchQueue
 
   private var subscriber: Subscription<State>.Listener?
 
+  public private(set) var state: State
   public lazy var subscribe: (@escaping (State) -> Void) -> Subscription<State> = _subscribe
-  public lazy var publish: (State, @escaping (State) -> Void) -> Void = _publish
 
-  public init(_ initial: State, queue: DispatchQueue = DispatchQueue(label: "playground")) {
-    self.initial = initial
+  public init(_ initial: State, queue: DispatchQueue = DispatchQueue(label: "test")) {
+    state = initial
     self.queue = queue
   }
 
-  private func _publish(_ value: State, complete: @escaping (State) -> Void) {
+  public func push(_ value: State) {
     guard let subscriber = subscriber else {
       return
     }
 
-    queue.async {
-      subscriber(value)
-      complete(value)
+      queue.async {
+        self.state = value
+        subscriber(value)
+      }
+  }
+
+  public func push(sync value: State) {
+    guard let subscriber = subscriber else {
+      return
     }
+
+      queue.sync {
+        self.state = value
+        subscriber(value)
+      }
   }
 
   private func _subscribe(_ subscriber: @escaping (State) -> Void) -> Subscription<State> {
@@ -34,7 +44,7 @@ public class PlayObservable<State>: ObservableType, PublisherType {
 
     self.subscriber = subscriber
     queue.async {
-      subscriber(self.initial)
+      subscriber(self.state)
     }
 
     return Subscription {
@@ -42,5 +52,3 @@ public class PlayObservable<State>: ObservableType, PublisherType {
     }
   }
 }
-
-

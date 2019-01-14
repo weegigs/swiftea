@@ -7,7 +7,7 @@
 
 @testable import WeeDux
 
-enum MathEvent {
+enum MathEvent: Equatable {
   case increment(_ amount: Int)
   case decrement(_ amount: Int)
   case multiply(_ factor: Int)
@@ -38,4 +38,4 @@ let divideReducer = { (state: Int, event: MathEvent) -> Int in
   return state / factor
 }
 
-let mathReducer = incrementReducer <> decrementReducer <> multiplyReducer <> divideReducer
+let math: EventHandler<Any, Int, MathEvent> = from(incrementReducer, decrementReducer, multiplyReducer, divideReducer)
