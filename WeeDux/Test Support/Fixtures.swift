@@ -16,9 +16,3 @@ public protocol FixtureCompatible {
 public extension FixtureCompatible {
   public var fixture: Fixture<Self> { return Fixture(self) }
 }
-
-extension String: FixtureCompatible {}
-
-public extension Fixture where Target == String {
-  var name: String { return "kevin" }
-}

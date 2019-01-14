@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A34546421EC30E20071E8FE /* Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A34546321EC30E20071E8FE /* Fixtures.swift */; };
 		0A3716D921E80B1700BC1CC8 /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3716D821E80B1700BC1CC8 /* Command.swift */; };
 		0A3716DB21E865C500BC1CC8 /* EventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3716DA21E865C500BC1CC8 /* EventHandler.swift */; };
 		0AA264E021E18A1C00ED7582 /* Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA264DF21E18A1C00ED7582 /* Combine.swift */; };
@@ -34,6 +35,7 @@
 
 /* Begin PBXFileReference section */
 		0A34546221EBF8220071E8FE /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		0A34546321EC30E20071E8FE /* Fixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fixtures.swift; sourceTree = "<group>"; };
 		0A3716D821E80B1700BC1CC8 /* Command.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
 		0A3716DA21E865C500BC1CC8 /* EventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHandler.swift; sourceTree = "<group>"; };
 		0AA264DF21E18A1C00ED7582 /* Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Combine.swift; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				0AEF071B21DEFC96005DD460 /* Info.plist */,
+				0A34546321EC30E20071E8FE /* Fixtures.swift */,
 				0AEF070921DEF300005DD460 /* Math.swift */,
 				0AEF073021E02774005DD460 /* TestObservable.swift */,
 			);
@@ -294,6 +297,7 @@
 				0AEF072F21E00C37005DD460 /* ObservableTestCase.swift in Sources */,
 				0AEF072921DF177D005DD460 /* EventHandlerTestCase.swift in Sources */,
 				0AEF072421DEFCD7005DD460 /* Math.swift in Sources */,
+				0A34546421EC30E20071E8FE /* Fixtures.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
