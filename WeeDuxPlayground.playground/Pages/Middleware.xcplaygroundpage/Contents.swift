@@ -24,30 +24,44 @@ func create() -> Reactor<Int, MathEvent> {
 
 //: First something to wrap a `Projection<State, EventSet>.Sink` that intecepts the publish method and prints the event and new state
 
-func logger<Event>(_ event: Event) -> Event {
-    print(event)
-    return event
+func logger<Event>(_ event: Event) -> Void {
+    print("\(Date()): \(event)")
 }
 
 //: Now a function that wraps a dispatch function
 
-func wrap<State, Event>(_ reactor: Reactor<State, Event>, _ f: @escaping (Event) -> Event ) -> Reactor<State, Event> {
+func enhance<State, Event>(_ reactor: Reactor<State, Event>, _ f: @escaping (Event) -> Event ) -> Reactor<State, Event> {
   return Reactor(dispatch: { reactor.dispatch(f($0)) }, subscribe: reactor.subscribe, read: reactor.read)
 }
 
+func enhance<State, Event>(_ reactor: Reactor<State, Event>, _ f: @escaping (Event) -> Void ) -> Reactor<State, Event> {
+  return Reactor(dispatch: { reactor.dispatch($0); f($0) }, subscribe: reactor.subscribe, read: reactor.read)
+}
 
-let logged = wrap(create(), logger)
+
+let logged = enhance(create(), logger)
 logged.dispatch(.increment(1))
+logged.dispatch(.increment(13))
 
 
 //: What about recording
 
 class Recorder<State, Event> {
+  private let worker: DispatchQueue = DispatchQueue(label: "worker")
   private(set) var events: [Event] = []
 
-  func record(_ event: Event) -> Event {
-    events.append(event)
-    return event
+  func enhance(_ reactor: Reactor<State, Event>) -> Reactor<State, Event> {
+    return Reactor(dispatch: self.dispatcher(reactor.dispatch), subscribe: reactor.subscribe, read: reactor.read)
+  }
+
+  private func dispatcher(_ dispatch: @escaping (Event) -> Void) -> (Event) -> Void {
+    return { event in
+      // use sync to keep dispatch and read in sync 
+      self.worker.sync {
+        dispatch(event)
+        self.events.append(event)
+      }
+    }
   }
 
   func playback(to reactor: Reactor<State, Event>) -> State {
@@ -59,14 +73,13 @@ class Recorder<State, Event> {
   }
 }
 
-
 let recorder = Recorder<Int, MathEvent>()
-let recorded = wrap(create(), recorder.record)
+let recorded = recorder.enhance(create())
 
 recorded.dispatch(.increment(5))
 recorded.dispatch(.decrement(2))
 
-let playback = wrap(create(), logger)
+let playback = enhance(create(), logger)
 recorder.playback(to: playback)
 
 recorded.read() == playback.read()
