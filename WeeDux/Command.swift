@@ -11,6 +11,10 @@ import Dispatch
 public struct Command<Environment, Event> {
   public typealias Effect = (Environment, @escaping (Event) -> Void) -> Void
   public let run: Effect
+
+  public init(effect: @escaping Effect) {
+    run = effect
+  }
 }
 
 public extension Command {

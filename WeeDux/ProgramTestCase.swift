@@ -3,13 +3,13 @@ import XCTest
 @testable import WeeDux
 
 final class ReactorTestCase: XCTestCase {
-  var reactor: Reactor<Int, MathEvent>!
+  var reactor: Program<Any, Int, MathEvent>!
 
   override func setUp() {
-    reactor = Reactor(state: 0, environment: (), handler: math)
+    reactor = Program(state: 0, environment: (), handler: math)
   }
 
-  func testExecute() {
+  func testDispatch() {
     let expectation = XCTestExpectation(description: "counter updated")
 
     let subscription = reactor.subscribe {

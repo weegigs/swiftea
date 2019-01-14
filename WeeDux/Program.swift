@@ -5,25 +5,31 @@
 
 import Dispatch
 
-public struct Reactor<State, Event>: ObservableType {
+public struct Program<Environment, State, Event>: ObservableType {
+  public let execute: (Command<Environment, Event>) -> Void
   public let dispatch: (Event) -> Void
   public let subscribe: (_ listener: @escaping Subscription<State>.Listener) -> Subscription<State>
   public let read: () -> State
 
-  public init(dispatch: @escaping (Event) -> Void,
-              subscribe: @escaping (_ listener: @escaping Subscription<State>.Listener) -> Subscription<State>,
-              read: @escaping () -> State) {
+  public init(
+    execute: @escaping (Command<Environment, Event>) -> Void,
+    dispatch: @escaping (Event) -> Void,
+    subscribe: @escaping (_ listener: @escaping Subscription<State>.Listener) -> Subscription<State>,
+    read: @escaping () -> State
+  ) {
+    self.execute = execute
     self.dispatch = dispatch
     self.subscribe = subscribe
     self.read = read
   }
 }
 
-public extension Reactor {
-  public init<Environment>(state: State, environment: Environment, handler: @escaping EventHandler<Environment, State, Event>) {
+public extension Program {
+  public init(state: State, environment: Environment, handler: @escaping EventHandler<Environment, State, Event>) {
     let reactor = BaseReactor(state: state, environment: environment, handler: handler)
 
     self.init(
+      execute: reactor.execute,
       dispatch: reactor.dispatch,
       subscribe: reactor.subscribe,
       read: reactor.read
@@ -102,13 +108,16 @@ fileprivate class BaseReactor<Environment, State, EventSet> {
 
   func dispatch(event: EventSet) {
     updates.async(flags: .barrier) {
-      let (state, effect) = self.handler(self.state, event)
+      let (state, command) = self.handler(self.state, event)
 
       self.state = state
+      self.execute(command: command)
+    }
+  }
 
-      self.effects.async {
-        effect.run(self.environment, self.dispatch)
-      }
+  func execute(command: Command<Environment, EventSet>) {
+    effects.async {
+      command.run(self.environment, self.dispatch)
     }
   }
 
