@@ -8,7 +8,7 @@
 
 public typealias Reducer<State, Event> = (State, Event) -> State
 
-public func merge<State, Event>(_ reducers: [Reducer<State, Event>]) -> Reducer<State, Event> {
+private func merge<State, Event>(reducers: [Reducer<State, Event>]) -> Reducer<State, Event> {
   return { (state: State, event: Event) in
     reducers.reduce(state, { current, reducer in
       reducer(current, event)
@@ -20,11 +20,11 @@ public func <> <State, Event>(
   _ first: @escaping Reducer<State, Event>,
   _ second: @escaping Reducer<State, Event>
 ) -> Reducer<State, Event> {
-  return merge([first, second])
+  return merge(reducers: [first, second])
 }
 
 public func reducer<T, V, E>(_ path: WritableKeyPath<T, V>, _ reducers: Reducer<V, E>...) -> (T, E) -> T {
-  let reducer = merge(reducers)
+  let reducer = merge(reducers: reducers)
   return { current, event in
     var state = current
     state[keyPath: path] = reducer(state[keyPath: path], event)

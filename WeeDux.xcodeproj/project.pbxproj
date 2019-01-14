@@ -13,10 +13,10 @@
 		0A3716DB21E865C500BC1CC8 /* EventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3716DA21E865C500BC1CC8 /* EventHandler.swift */; };
 		0AA264E021E18A1C00ED7582 /* Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA264DF21E18A1C00ED7582 /* Combine.swift */; };
 		0AEF06E721DEF1D7005DD460 /* WeeDux.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AEF06E521DEF1D7005DD460 /* WeeDux.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0AEF070221DEF2D7005DD460 /* Reactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF06FD21DEF2D6005DD460 /* Reactor.swift */; };
+		0AEF070221DEF2D7005DD460 /* Program.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF06FD21DEF2D6005DD460 /* Program.swift */; };
 		0AEF070321DEF2D7005DD460 /* MultiReaderSingleWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF06FE21DEF2D6005DD460 /* MultiReaderSingleWriter.swift */; };
 		0AEF071C21DEFC96005DD460 /* WeeDux.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AEF06E221DEF1D7005DD460 /* WeeDux.framework */; };
-		0AEF072221DEFCD7005DD460 /* ReactorTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF070821DEF300005DD460 /* ReactorTestCase.swift */; };
+		0AEF072221DEFCD7005DD460 /* ProgramTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF070821DEF300005DD460 /* ProgramTestCase.swift */; };
 		0AEF072421DEFCD7005DD460 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF070921DEF300005DD460 /* Math.swift */; };
 		0AEF072921DF177D005DD460 /* EventHandlerTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF072821DF177D005DD460 /* EventHandlerTestCase.swift */; };
 		0AEF072D21E00B79005DD460 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF072C21E00B79005DD460 /* Observable.swift */; };
@@ -44,9 +44,9 @@
 		0AEF06E221DEF1D7005DD460 /* WeeDux.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WeeDux.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AEF06E521DEF1D7005DD460 /* WeeDux.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WeeDux.h; sourceTree = "<group>"; };
 		0AEF06E621DEF1D7005DD460 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0AEF06FD21DEF2D6005DD460 /* Reactor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reactor.swift; sourceTree = "<group>"; };
+		0AEF06FD21DEF2D6005DD460 /* Program.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Program.swift; sourceTree = "<group>"; };
 		0AEF06FE21DEF2D6005DD460 /* MultiReaderSingleWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiReaderSingleWriter.swift; sourceTree = "<group>"; };
-		0AEF070821DEF300005DD460 /* ReactorTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactorTestCase.swift; sourceTree = "<group>"; };
+		0AEF070821DEF300005DD460 /* ProgramTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgramTestCase.swift; sourceTree = "<group>"; };
 		0AEF070921DEF300005DD460 /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		0AEF071221DEF7C5005DD460 /* WeeDuxPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = WeeDuxPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		0AEF071721DEFC96005DD460 /* WeeDuxTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WeeDuxTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -111,8 +111,8 @@
 				0AEF072821DF177D005DD460 /* EventHandlerTestCase.swift */,
 				0AEF072C21E00B79005DD460 /* Observable.swift */,
 				0AEF072E21E00C37005DD460 /* ObservableTestCase.swift */,
-				0AEF06FD21DEF2D6005DD460 /* Reactor.swift */,
-				0AEF070821DEF300005DD460 /* ReactorTestCase.swift */,
+				0AEF06FD21DEF2D6005DD460 /* Program.swift */,
+				0AEF070821DEF300005DD460 /* ProgramTestCase.swift */,
 				0A34546521EC51A90071E8FE /* Reducer.swift */,
 				0AEF072521DEFE5B005DD460 /* Internal */,
 				0AA2653121E5642100ED7582 /* Operators */,
@@ -283,7 +283,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A3716D921E80B1700BC1CC8 /* Command.swift in Sources */,
-				0AEF070221DEF2D7005DD460 /* Reactor.swift in Sources */,
+				0AEF070221DEF2D7005DD460 /* Program.swift in Sources */,
 				0AEF072D21E00B79005DD460 /* Observable.swift in Sources */,
 				0AEF070321DEF2D7005DD460 /* MultiReaderSingleWriter.swift in Sources */,
 				0A34546621EC51A90071E8FE /* Reducer.swift in Sources */,
@@ -297,7 +297,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0AEF073121E02774005DD460 /* TestObservable.swift in Sources */,
-				0AEF072221DEFCD7005DD460 /* ReactorTestCase.swift in Sources */,
+				0AEF072221DEFCD7005DD460 /* ProgramTestCase.swift in Sources */,
 				0AEF072F21E00C37005DD460 /* ObservableTestCase.swift in Sources */,
 				0AEF072921DF177D005DD460 /* EventHandlerTestCase.swift in Sources */,
 				0AEF072421DEFCD7005DD460 /* Math.swift in Sources */,

@@ -18,14 +18,14 @@ class EventHandlerTestCase: XCTestCase {
   }
 
   func testCombineTwoReducers() {
-    let reducer = merge(augment("a"), augment("b"))
+    let reducer = augment("a") <> augment("b")
     let (result, _) = reducer(["one"], "two")
 
     XCTAssertEqual(result, ["one", "two-a", "two-b"])
   }
 
   func testCombineThreeReducers() {
-    let reducer = merge(add, augment("a"), augment("b"))
+    let reducer = add <> augment("a") <> augment("b")
     let (result, _) = reducer(["one"], "two")
 
     XCTAssertEqual(result, ["one", "two", "two-a", "two-b"])
