@@ -22,6 +22,7 @@
 		0AEF072D21E00B79005DD460 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF072C21E00B79005DD460 /* Observable.swift */; };
 		0AEF072F21E00C37005DD460 /* ObservableTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF072E21E00C37005DD460 /* ObservableTestCase.swift */; };
 		0AEF073121E02774005DD460 /* TestObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF073021E02774005DD460 /* TestObservable.swift */; };
+		613849E7C610D4D9D470D84B /* Middleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61384D96C057A12620D2F3F7 /* Middleware.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +56,7 @@
 		0AEF072C21E00B79005DD460 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		0AEF072E21E00C37005DD460 /* ObservableTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableTestCase.swift; sourceTree = "<group>"; };
 		0AEF073021E02774005DD460 /* TestObservable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestObservable.swift; sourceTree = "<group>"; };
+		61384D96C057A12620D2F3F7 /* Middleware.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Middleware.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +111,7 @@
 				0A3716D821E80B1700BC1CC8 /* Command.swift */,
 				0A3716DA21E865C500BC1CC8 /* EventHandler.swift */,
 				0AEF072821DF177D005DD460 /* EventHandlerTestCase.swift */,
+				61384D96C057A12620D2F3F7 /* Middleware.swift */,
 				0AEF072C21E00B79005DD460 /* Observable.swift */,
 				0AEF072E21E00C37005DD460 /* ObservableTestCase.swift */,
 				0AEF06FD21DEF2D6005DD460 /* Program.swift */,
@@ -289,6 +292,7 @@
 				0A34546621EC51A90071E8FE /* Reducer.swift in Sources */,
 				0AA264E021E18A1C00ED7582 /* Combine.swift in Sources */,
 				0A3716DB21E865C500BC1CC8 /* EventHandler.swift in Sources */,
+				613849E7C610D4D9D470D84B /* Middleware.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

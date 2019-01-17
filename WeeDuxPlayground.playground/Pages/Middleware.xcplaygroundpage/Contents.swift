@@ -2,12 +2,6 @@
 
 import WeeDux
 
-/*:
- Q: Why doesn't WeeDux have "Middleware"?
-
- A: Becuase `func` is a synonym for "Middleware"
- */
-
 //: Projection Middleware
 func create() -> Program<Any, Int, MathEvent> {
   return Program<Any, Int, MathEvent>(state: 0, environment: (), handler: math)

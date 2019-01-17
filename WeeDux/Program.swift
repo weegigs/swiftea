@@ -5,9 +5,11 @@
 
 import Dispatch
 
+public typealias DispatchFunction<Event> = (Event) -> Void
+
 public struct Program<Environment, State, Event>: ObservableType {
   public let execute: (Command<Environment, Event>) -> Void
-  public let dispatch: (Event) -> Void
+  public let dispatch: DispatchFunction<Event>
   public let subscribe: (_ listener: @escaping Subscription<State>.Listener) -> Subscription<State>
   public let read: () -> State
 
@@ -25,29 +27,45 @@ public struct Program<Environment, State, Event>: ObservableType {
 }
 
 public extension Program {
-  public init(state: State, environment: Environment, handler: @escaping EventHandler<Environment, State, Event>) {
-    let reactor = BaseProgram(state: state, environment: environment, handler: handler)
+  public init(
+    state: State,
+    environment: Environment,
+    middleware: [Middleware<State, Event>],
+    handler: @escaping EventHandler<Environment, State, Event>
+  ) {
+    let program = BaseProgram(state: state, environment: environment, middleware: middleware, handler: handler)
 
     self.init(
-      execute: reactor.execute,
-      dispatch: reactor.dispatch,
-      subscribe: reactor.subscribe,
-      read: reactor.read
+      execute: program.execute,
+      dispatch: program.dispatch,
+      subscribe: program.subscribe,
+      read: program.read
     )
   }
 }
 
 // internal
 
-fileprivate class BaseProgram<Environment, State, EventSet> {
+fileprivate class BaseProgram<Environment, State, Event> {
   typealias Subscriber<State> = (State) -> Void
 
   private let updates: DispatchQueue
   private let effects: DispatchQueue
   private let notifications: DispatchQueue
 
-  fileprivate let environment: Environment
-  private let handler: EventHandler<Environment, State, EventSet>
+  private let environment: Environment
+  private let handler: EventHandler<Environment, State, Event>
+  private let middleware: [Middleware<State, Event>]
+  private lazy var dispatcher: DispatchFunction<Event> = {
+    let run = { [unowned self] (event: Event) in
+      let (state, command) = self.handler(self.environment, self.state, event)
+      self.state = state
+      self.execute(command: command)
+    }
+    let read = { [unowned self] in self.state }
+
+    return middleware.reversed().reduce(run, { next, ware in ware(read, next) })
+  }()
 
   private var subscriptions: MultiReaderSingleWriter<[String: ReducerSubscription<State>]>
   private var state: State {
@@ -67,7 +85,12 @@ fileprivate class BaseProgram<Environment, State, EventSet> {
     }
   }
 
-  init(state: State, environment: Environment, handler: @escaping EventHandler<Environment, State, EventSet>) {
+  init(
+    state: State,
+    environment: Environment,
+    middleware: [Middleware<State, Event>],
+    handler: @escaping EventHandler<Environment, State, Event>
+  ) {
     updates = DispatchQueue(label: "com.weegigs.dispatcher-\(UUID().uuidString)", attributes: .concurrent)
     effects = DispatchQueue(label: "\(updates.label).effects", attributes: .concurrent)
     notifications = DispatchQueue(label: "\(updates.label).notifications")
@@ -75,6 +98,7 @@ fileprivate class BaseProgram<Environment, State, EventSet> {
 
     self.state = state
     self.environment = environment
+    self.middleware = middleware
     self.handler = handler
   }
 
@@ -106,16 +130,13 @@ fileprivate class BaseProgram<Environment, State, EventSet> {
     }
   }
 
-  func dispatch(event: EventSet) {
+  func dispatch(event: Event) {
     updates.async(flags: .barrier) {
-      let (state, command) = self.handler(self.environment, self.state, event)
-
-      self.state = state
-      self.execute(command: command)
+      self.dispatcher(event)
     }
   }
 
-  func execute(command: Command<Environment, EventSet>) {
+  func execute(command: Command<Environment, Event>) {
     effects.async {
       command.run(self.environment, self.dispatch)
     }

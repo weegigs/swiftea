@@ -3,24 +3,36 @@ import XCTest
 @testable import WeeDux
 
 final class ReactorTestCase: XCTestCase {
-  var reactor: Program<Any, Int, MathEvent>!
+  var program: Program<Any, Int, MathEvent>!
+  var count: Int = Int.min
+  var state: Int = Int.min
 
   override func setUp() {
-    reactor = Program(state: 0, environment: (), handler: math)
+    count = 0
+    state = 0
+
+    let counter: Middleware<Int, MathEvent> = { state, next in { event in
+      self.count += 1
+      next(event)
+      self.state = state()
+    }
+    }
+
+    program = Program(state: 0, environment: (), middleware: [counter], handler: math)
   }
 
   func testDispatch() {
     let expectation = XCTestExpectation(description: "counter updated")
 
-    let subscription = reactor.subscribe {
+    let subscription = program.subscribe {
       if $0 == 4 {
         expectation.fulfill()
       }
     }
 
-    reactor.dispatch(.increment(2))
-    reactor.dispatch(.multiply(2))
-    let state = reactor.read()
+    program.dispatch(.increment(2))
+    program.dispatch(.multiply(2))
+    let state = program.read()
 
     wait(for: [expectation], timeout: 1)
     subscription.unsubscribe()
@@ -28,12 +40,31 @@ final class ReactorTestCase: XCTestCase {
     XCTAssertEqual(state, 4)
   }
 
+  func testMiddleware() {
+    let expectation = XCTestExpectation(description: "counter updated")
+
+    let subscription = program.subscribe {
+      if $0 == 4 {
+        expectation.fulfill()
+      }
+    }
+
+    program.dispatch(.increment(2))
+    program.dispatch(.multiply(2))
+
+    wait(for: [expectation], timeout: 1)
+    subscription.unsubscribe()
+
+    XCTAssertEqual(state, 4)
+    XCTAssertEqual(count, 2)
+  }
+
   func testSubscibeCurrentValueIsProvided() {
     let expectation = XCTestExpectation(description: "subscription delivered")
     var state: Int!
 
-    reactor.dispatch(.increment(2))
-    let subsciption = reactor.subscribe {
+    program.dispatch(.increment(2))
+    let subsciption = program.subscribe {
       state = $0
       expectation.fulfill()
     }
@@ -43,46 +74,46 @@ final class ReactorTestCase: XCTestCase {
     subsciption.unsubscribe()
 
     XCTAssertEqual(2, state)
-    XCTAssertEqual(2, reactor.read())
+    XCTAssertEqual(2, program.read())
   }
 
   func testSubscibeProvidesSubsequentValues() {
     let expectation = XCTestExpectation(description: "subscription delivered")
     var state: Int = -1
 
-    let subsciption = reactor.subscribe {
+    let subsciption = program.subscribe {
       state = $0
       if state == 3 {
         expectation.fulfill()
       }
     }
 
-    reactor.dispatch(.increment(1))
-    reactor.dispatch(.increment(1))
-    reactor.dispatch(.increment(1))
+    program.dispatch(.increment(1))
+    program.dispatch(.increment(1))
+    program.dispatch(.increment(1))
 
     wait(for: [expectation], timeout: 1)
 
     subsciption.unsubscribe()
 
     XCTAssert(state == 3)
-    XCTAssert(reactor.read() == 3)
+    XCTAssert(program.read() == 3)
   }
 
   func testUpdatesAreDeliveredInOrder() {
     let expectation = XCTestExpectation(description: "subscriptions delivered")
     var state: [Int] = []
 
-    let subsciption = reactor.subscribe {
+    let subsciption = program.subscribe {
       state.append($0)
       if $0 == 3 {
         expectation.fulfill()
       }
     }
 
-    reactor.dispatch(.increment(1))
-    reactor.dispatch(.increment(1))
-    reactor.dispatch(.increment(1))
+    program.dispatch(.increment(1))
+    program.dispatch(.increment(1))
+    program.dispatch(.increment(1))
 
     wait(for: [expectation], timeout: 1)
 
@@ -90,6 +121,6 @@ final class ReactorTestCase: XCTestCase {
 
     XCTAssertEqual(state.count, 4)
     XCTAssertEqual(state, [0, 1, 2, 3])
-    XCTAssertEqual(reactor.read(), 3)
+    XCTAssertEqual(program.read(), 3)
   }
 }
