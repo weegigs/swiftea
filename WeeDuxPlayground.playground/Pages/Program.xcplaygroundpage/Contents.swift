@@ -2,7 +2,7 @@
 
 import WeeDux
 
-let program = Program(state: "", environment: [:], handler: { (state: String, event: String) -> (String, Command<Any, String>) in
+let program = Program(state: "", environment: [:], middleware: [], handler: { (_: Any, state: String, event: String) -> (String, Command<Any, String>) in
   if state.isEmpty {
     return (event, .none)
   }

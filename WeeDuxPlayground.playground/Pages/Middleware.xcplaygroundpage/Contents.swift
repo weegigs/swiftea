@@ -2,38 +2,21 @@
 
 import WeeDux
 
-//: Projection Middleware
-func create() -> Program<Any, Int, MathEvent> {
-  return Program<Any, Int, MathEvent>(state: 0, environment: (), handler: math)
+typealias MathMiddleware =  Middleware<Int, MathEvent>
+
+func create(_ middleware: MathMiddleware...) -> Program<Any, Int, MathEvent> {
+  return Program<Any, Int, MathEvent>(state: 0, environment: (), middleware: middleware, handler: math)
 }
 
-/*:
- As discussed earlier, projection is the combination of the functions, `publish`, `subscribe` and  `read`
+//: A simle logging function that prints the event and new state
 
- Because we use function binding within a struct scope middleware can be used on any of the interface methods
- but it's most useful with publish.
-
- Let's create the classic logging Middleware
- */
-
-//: First something to wrap a `Projection<State, EventSet>.Sink` that intecepts the publish method and prints the event and new state
-
-func logger<Event>(_ event: Event) -> Void {
-    print("\(Date()): \(event)")
-}
-
-//: Now a function that wraps a dispatch function
-
-func enhance<State, Event>(_ program: Program<Any, State, Event>, _ f: @escaping (Event) -> Event ) -> Program<Any, State, Event> {
-  return Program(execute: program.execute, dispatch: { program.dispatch(f($0)) }, subscribe: program.subscribe, read: program.read)
-}
-
-func enhance<State, Event>(_ program: Program<Any, State, Event>, _ f: @escaping (Event) -> Void ) -> Program<Any, State, Event> {
-  return Program(execute: program.execute, dispatch: { program.dispatch($0); f($0) }, subscribe: program.subscribe, read: program.read)
-}
+let logging: MathMiddleware = { state, next in { event in
+  next(event)
+  print("processed: \(type(of: event)).\(event), state: \(state())")
+  } }
 
 
-let logged = enhance(create(), logger)
+let logged = create(logging)
 logged.dispatch(.increment(1))
 logged.dispatch(.increment(13))
 
@@ -43,8 +26,13 @@ class Recorder<State, Event> {
   private let worker: DispatchQueue = DispatchQueue(label: "worker")
   private(set) var events: [Event] = []
 
-  func enhance(_ program: Program<Any, State, Event>) -> Program<Any, State, Event> {
-    return Program(execute: program.execute, dispatch: self.dispatcher(program.dispatch), subscribe: program.subscribe, read: program.read)
+  var recorder: Middleware<State, Event> {
+    return { (state, next) in { event in
+      self.worker.sync {
+        self.events.append(event)
+      }
+      next(event)
+    }}
   }
 
   private func dispatcher(_ dispatch: @escaping (Event) -> Void) -> (Event) -> Void {
@@ -67,12 +55,12 @@ class Recorder<State, Event> {
 }
 
 let recorder = Recorder<Int, MathEvent>()
-let recorded = recorder.enhance(create())
+let recorded = create(recorder.recorder)
 
 recorded.dispatch(.increment(5))
 recorded.dispatch(.decrement(2))
 
-let playback = enhance(create(), logger)
+let playback = create(logging)
 recorder.playback(to: playback)
 
 recorded.read() == playback.read()
