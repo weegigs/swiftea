@@ -58,7 +58,7 @@ fileprivate class BaseProgram<Environment, State, Event> {
   private let middleware: [Middleware<State, Event>]
   private lazy var dispatcher: DispatchFunction<Event> = {
     let run = { [unowned self] (event: Event) in
-      let (state, command) = self.handler(self.environment, self.state, event)
+      let (state, command) = self.handler(self.state, event)
       self.state = state
       self.execute(command: command)
     }

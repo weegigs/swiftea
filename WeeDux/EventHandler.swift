@@ -3,13 +3,13 @@
 //  Copyright © 2019 Kevin O'Neill. All rights reserved.
 //
 
-public typealias EventHandler<Environment, State, Event> = (Environment, State, Event) -> (State, Command<Environment, Event>)
+public typealias EventHandler<Environment, State, Event> = (State, Event) -> (State, Command<Environment, Event>)
 
 private func merge<Environment, State, Event>(_ handlers: [EventHandler<Environment, State, Event>]) -> EventHandler<Environment, State, Event> {
-  return { (environment: Environment, state: State, event: Event) in
+  return { (state: State, event: Event) in
     let reduced: (State, [Command<Environment, Event>]) = handlers.reduce((state, []), { current, processor in
       let (state, commands) = current
-      let (updated, command) = processor(environment, state, event)
+      let (updated, command) = processor(state, event)
       return (updated, commands + [command])
     })
 
@@ -25,7 +25,7 @@ public func <> <Environment, State, Event>(
 }
 
 public func handler<Environment, State, Event>(_ reducer: @escaping Reducer<State, Event>) -> EventHandler<Environment, State, Event> {
-  return { _, state, event in (reducer(state, event), .none) }
+  return { state, event in (reducer(state, event), .none) }
 }
 
 public func handler<Environment, State, Value, Event>(
@@ -33,8 +33,8 @@ public func handler<Environment, State, Value, Event>(
   _ handlers: EventHandler<Environment, Value, Event>...
 ) -> EventHandler<Environment, State, Event> {
   let handler = merge(handlers)
-  return { environment, state, event in
-    let (update, commands) = handler(environment, state[keyPath: path], event)
+  return { state, event in
+    let (update, commands) = handler(state[keyPath: path], event)
     var updated = state
     updated[keyPath: path] = update
 

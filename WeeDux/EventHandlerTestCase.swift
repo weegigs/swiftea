@@ -7,33 +7,33 @@ import WeeDux
 import XCTest
 
 class EventHandlerTestCase: XCTestCase {
-  func augment(_ suffix: String) -> ((Any, [String], String) -> ([String], Command<Any, String>)) {
-    return { (_, state, event) -> ([String], Command<Any, String>) in
+  func augment(_ suffix: String) -> (([String], String) -> ([String], Command<Any, String>)) {
+    return { (state, event) -> ([String], Command<Any, String>) in
       (state + ["\(event)-\(suffix)"], .none)
     }
   }
 
-  func add(env _: Any, state: [String], event: String) -> ([String], Command<Any, String>) {
+  func add(state: [String], event: String) -> ([String], Command<Any, String>) {
     return (state + [event], .none)
   }
 
   func testCombineTwoReducers() {
     let reducer = augment("a") <> augment("b")
-    let (result, _) = reducer((), ["one"], "two")
+    let (result, _) = reducer(["one"], "two")
 
     XCTAssertEqual(result, ["one", "two-a", "two-b"])
   }
 
   func testCombineThreeReducers() {
     let reducer = add <> augment("a") <> augment("b")
-    let (result, _) = reducer((), ["one"], "two")
+    let (result, _) = reducer(["one"], "two")
 
     XCTAssertEqual(result, ["one", "two", "two-a", "two-b"])
   }
 
   func testCombineOperater() {
     let reducer = add <> augment("a") <> augment("b")
-    let (result, _) = reducer((), ["one"], "two")
+    let (result, _) = reducer(["one"], "two")
 
     XCTAssertEqual(result, ["one", "two", "two-a", "two-b"])
   }
