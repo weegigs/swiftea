@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "0AEF06E121DEF1D7005DD460"
-               BuildableName = "WeeDux_iOS.framework"
+               BuildableName = "WeeDux.framework"
                BlueprintName = "WeeDux-iOS"
                ReferencedContainer = "container:WeeDux.xcodeproj">
             </BuildableReference>
@@ -33,7 +33,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "0AEF06E121DEF1D7005DD460"
-            BuildableName = "WeeDux_iOS.framework"
+            BuildableName = "WeeDux.framework"
             BlueprintName = "WeeDux-iOS"
             ReferencedContainer = "container:WeeDux.xcodeproj">
          </BuildableReference>
@@ -54,7 +54,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "0AEF06E121DEF1D7005DD460"
-            BuildableName = "WeeDux_iOS.framework"
+            BuildableName = "WeeDux.framework"
             BlueprintName = "WeeDux-iOS"
             ReferencedContainer = "container:WeeDux.xcodeproj">
          </BuildableReference>
@@ -76,7 +76,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "0AEF06E121DEF1D7005DD460"
-            BuildableName = "WeeDux_iOS.framework"
+            BuildableName = "WeeDux.framework"
             BlueprintName = "WeeDux-iOS"
             ReferencedContainer = "container:WeeDux.xcodeproj">
          </BuildableReference>
@@ -94,7 +94,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "0AEF06E121DEF1D7005DD460"
-            BuildableName = "WeeDux_iOS.framework"
+            BuildableName = "WeeDux.framework"
             BlueprintName = "WeeDux-iOS"
             ReferencedContainer = "container:WeeDux.xcodeproj">
          </BuildableReference>
