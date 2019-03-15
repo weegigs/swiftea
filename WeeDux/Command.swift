@@ -7,6 +7,7 @@
 //
 
 import Dispatch
+import Foundation
 
 public struct Command<Environment, Event> {
   public typealias Effect = (Environment, @escaping (Event) -> Void) -> Void
@@ -18,7 +19,7 @@ public struct Command<Environment, Event> {
 }
 
 public extension Command {
-  public static var none: Command<Environment, Event> {
+  static var none: Command<Environment, Event> {
     return Command { _, _ in }
   }
 

@@ -91,7 +91,7 @@ class ObservableTestCase: XCTestCase {
     let observable = TestObservable(0)
 
     let subsciption = DispatchQueue.global(qos: .background).sync {
-      return observable
+      observable
         .deliver(on: .main)
         .subscribe { value in
           XCTAssert(Thread.isMainThread)
@@ -116,7 +116,7 @@ class ObservableTestCase: XCTestCase {
     let observable = TestObservable(0)
 
     let subsciption = DispatchQueue.global(qos: .background).sync {
-      return observable
+      observable
         .subscribe(on: .main) { value in
           XCTAssert(Thread.isMainThread)
           if value == 1 {

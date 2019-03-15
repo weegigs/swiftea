@@ -14,5 +14,5 @@ public protocol FixtureCompatible {
 }
 
 public extension FixtureCompatible {
-  public var fixture: Fixture<Self> { return Fixture(self) }
+  var fixture: Fixture<Self> { return Fixture(self) }
 }

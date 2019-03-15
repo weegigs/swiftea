@@ -4,6 +4,7 @@
 //
 
 import Dispatch
+import Foundation
 
 public typealias DispatchFunction<Event> = (Event) -> Void
 
@@ -27,7 +28,7 @@ public struct Program<Environment, State, Event>: ObservableType {
 }
 
 public extension Program {
-  public init(
+  init(
     state: State,
     environment: Environment,
     middleware: [Middleware<State, Event>],
@@ -46,7 +47,7 @@ public extension Program {
 
 // internal
 
-fileprivate class BaseProgram<Environment, State, Event> {
+private class BaseProgram<Environment, State, Event> {
   typealias Subscriber<State> = (State) -> Void
 
   private let updates: DispatchQueue

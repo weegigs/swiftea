@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A2160BB2239D13B0005BB91 /* WeeDux.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AEF06E521DEF1D7005DD460 /* WeeDux.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0A2160BC2239D1540005BB91 /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3716D821E80B1700BC1CC8 /* Command.swift */; };
+		0A2160BD2239D1540005BB91 /* EventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3716DA21E865C500BC1CC8 /* EventHandler.swift */; };
+		0A2160BE2239D1540005BB91 /* Middleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61384D96C057A12620D2F3F7 /* Middleware.swift */; };
+		0A2160BF2239D1540005BB91 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF072C21E00B79005DD460 /* Observable.swift */; };
+		0A2160C02239D1540005BB91 /* Program.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF06FD21DEF2D6005DD460 /* Program.swift */; };
+		0A2160C12239D1540005BB91 /* Reducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A34546521EC51A90071E8FE /* Reducer.swift */; };
+		0A2160C22239D15A0005BB91 /* MultiReaderSingleWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF06FE21DEF2D6005DD460 /* MultiReaderSingleWriter.swift */; };
+		0A2160C32239D1600005BB91 /* Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA264DF21E18A1C00ED7582 /* Combine.swift */; };
 		0A34546421EC30E20071E8FE /* Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A34546321EC30E20071E8FE /* Fixtures.swift */; };
 		0A34546621EC51A90071E8FE /* Reducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A34546521EC51A90071E8FE /* Reducer.swift */; };
 		0A3716D921E80B1700BC1CC8 /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3716D821E80B1700BC1CC8 /* Command.swift */; };
@@ -36,6 +45,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0A2160B32239CF770005BB91 /* WeeDux.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WeeDux.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A34546221EBF8220071E8FE /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		0A34546321EC30E20071E8FE /* Fixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fixtures.swift; sourceTree = "<group>"; };
 		0A34546521EC51A90071E8FE /* Reducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reducer.swift; sourceTree = "<group>"; };
@@ -60,6 +70,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		0A2160B02239CF770005BB91 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0AEF06DF21DEF1D7005DD460 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -101,6 +118,7 @@
 			children = (
 				0AEF06E221DEF1D7005DD460 /* WeeDux.framework */,
 				0AEF071721DEFC96005DD460 /* WeeDuxTests.xctest */,
+				0A2160B32239CF770005BB91 /* WeeDux.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -128,8 +146,8 @@
 		0AEF06ED21DEF23C005DD460 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				0AEF06E621DEF1D7005DD460 /* Info.plist */,
 				0AEF06E521DEF1D7005DD460 /* WeeDux.h */,
+				0AEF06E621DEF1D7005DD460 /* Info.plist */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -156,6 +174,14 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		0A2160AE2239CF770005BB91 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A2160BB2239D13B0005BB91 /* WeeDux.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0AEF06DD21DEF1D7005DD460 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -167,9 +193,27 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		0AEF06E121DEF1D7005DD460 /* WeeDux */ = {
+		0A2160B22239CF770005BB91 /* WeeDux-MacOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 0AEF06EA21DEF1D7005DD460 /* Build configuration list for PBXNativeTarget "WeeDux" */;
+			buildConfigurationList = 0A2160B82239CF780005BB91 /* Build configuration list for PBXNativeTarget "WeeDux-MacOS" */;
+			buildPhases = (
+				0A2160AE2239CF770005BB91 /* Headers */,
+				0A2160AF2239CF770005BB91 /* Sources */,
+				0A2160B02239CF770005BB91 /* Frameworks */,
+				0A2160B12239CF770005BB91 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "WeeDux-MacOS";
+			productName = WeeDux;
+			productReference = 0A2160B32239CF770005BB91 /* WeeDux.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		0AEF06E121DEF1D7005DD460 /* WeeDux-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0AEF06EA21DEF1D7005DD460 /* Build configuration list for PBXNativeTarget "WeeDux-iOS" */;
 			buildPhases = (
 				0AEF06DD21DEF1D7005DD460 /* Headers */,
 				0AEF071121DEF685005DD460 /* Format */,
@@ -181,7 +225,7 @@
 			);
 			dependencies = (
 			);
-			name = WeeDux;
+			name = "WeeDux-iOS";
 			productName = WeeDux;
 			productReference = 0AEF06E221DEF1D7005DD460 /* WeeDux.framework */;
 			productType = "com.apple.product-type.framework";
@@ -214,6 +258,9 @@
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = "Kevin O'Neill";
 				TargetAttributes = {
+					0A2160B22239CF770005BB91 = {
+						CreatedOnToolsVersion = 10.1;
+					};
 					0AEF06E121DEF1D7005DD460 = {
 						CreatedOnToolsVersion = 10.1;
 						LastSwiftMigration = 1010;
@@ -235,13 +282,21 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				0AEF06E121DEF1D7005DD460 /* WeeDux */,
+				0AEF06E121DEF1D7005DD460 /* WeeDux-iOS */,
+				0A2160B22239CF770005BB91 /* WeeDux-MacOS */,
 				0AEF071621DEFC96005DD460 /* WeeDuxTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		0A2160B12239CF770005BB91 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0AEF06E021DEF1D7005DD460 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -281,6 +336,21 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		0A2160AF2239CF770005BB91 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A2160C02239D1540005BB91 /* Program.swift in Sources */,
+				0A2160BF2239D1540005BB91 /* Observable.swift in Sources */,
+				0A2160C12239D1540005BB91 /* Reducer.swift in Sources */,
+				0A2160BE2239D1540005BB91 /* Middleware.swift in Sources */,
+				0A2160BC2239D1540005BB91 /* Command.swift in Sources */,
+				0A2160C32239D1600005BB91 /* Combine.swift in Sources */,
+				0A2160C22239D15A0005BB91 /* MultiReaderSingleWriter.swift in Sources */,
+				0A2160BD2239D1540005BB91 /* EventHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0AEF06DE21DEF1D7005DD460 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -314,12 +384,70 @@
 /* Begin PBXTargetDependency section */
 		0AEF071E21DEFC96005DD460 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 0AEF06E121DEF1D7005DD460 /* WeeDux */;
+			target = 0AEF06E121DEF1D7005DD460 /* WeeDux-iOS */;
 			targetProxy = 0AEF071D21DEFC96005DD460 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		0A2160B92239CF780005BB91 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = Z7BZBSJBEL;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = "$(SRCROOT)/WeeDux/Supporting Files/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = com.weegigs.WeeDux;
+				PRODUCT_NAME = WeeDux;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+			};
+			name = Debug;
+		};
+		0A2160BA2239CF780005BB91 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = Z7BZBSJBEL;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = "$(SRCROOT)/WeeDux/Supporting Files/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = com.weegigs.WeeDux;
+				PRODUCT_NAME = WeeDux;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+			};
+			name = Release;
+		};
 		0AEF06E821DEF1D7005DD460 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -445,6 +573,7 @@
 		0AEF06EB21DEF1D7005DD460 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
@@ -462,7 +591,7 @@
 					"@loader_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.weegigs.WeeDux;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = WeeDux;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
@@ -473,6 +602,7 @@
 		0AEF06EC21DEF1D7005DD460 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
@@ -490,7 +620,7 @@
 					"@loader_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.weegigs.WeeDux;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = WeeDux;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -536,6 +666,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		0A2160B82239CF780005BB91 /* Build configuration list for PBXNativeTarget "WeeDux-MacOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0A2160B92239CF780005BB91 /* Debug */,
+				0A2160BA2239CF780005BB91 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		0AEF06DC21DEF1D7005DD460 /* Build configuration list for PBXProject "WeeDux" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -545,7 +684,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		0AEF06EA21DEF1D7005DD460 /* Build configuration list for PBXNativeTarget "WeeDux" */ = {
+		0AEF06EA21DEF1D7005DD460 /* Build configuration list for PBXNativeTarget "WeeDux-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0AEF06EB21DEF1D7005DD460 /* Debug */,

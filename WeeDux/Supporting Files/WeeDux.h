@@ -6,7 +6,7 @@
 //  Copyright © 2019 Kevin O'Neill. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 //! Project version number for WeeDux.
 FOUNDATION_EXPORT double WeeDuxVersionNumber;

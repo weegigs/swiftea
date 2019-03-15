@@ -3,6 +3,8 @@
 //  Copyright © 2019 Kevin O'Neill. All rights reserved.
 //
 
+import Dispatch
+
 public struct Subscription<State> {
   public typealias Listener = (_ state: State) -> Void
   public let unsubscribe: () -> Void
@@ -49,7 +51,7 @@ public extension ObservableType {
 }
 
 public extension ObservableType where State: Equatable {
-  public func distinct() -> Observable<State> {
+  func distinct() -> Observable<State> {
     return Observable { subscriber in
       var previous: State?
 
@@ -70,7 +72,7 @@ public extension ObservableType where State: Equatable {
 }
 
 public extension ObservableType {
-  public func deliver(on queue: DispatchQueue) -> Observable<State> {
+  func deliver(on queue: DispatchQueue) -> Observable<State> {
     return Observable { subscriber in
       self.subscribe { state in
         queue.sync {
@@ -82,7 +84,7 @@ public extension ObservableType {
 }
 
 public extension ObservableType {
-  public func subscribe(on queue: DispatchQueue, subscriber: @escaping Subscription<State>.Listener) -> Subscription<State> {
+  func subscribe(on queue: DispatchQueue, subscriber: @escaping Subscription<State>.Listener) -> Subscription<State> {
     return deliver(on: queue).subscribe(subscriber)
   }
 }

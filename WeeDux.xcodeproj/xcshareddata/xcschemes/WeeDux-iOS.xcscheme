@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "0AEF06E121DEF1D7005DD460"
-               BuildableName = "WeeDux.framework"
-               BlueprintName = "WeeDux"
+               BuildableName = "WeeDux_iOS.framework"
+               BlueprintName = "WeeDux-iOS"
                ReferencedContainer = "container:WeeDux.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -33,8 +33,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "0AEF06E121DEF1D7005DD460"
-            BuildableName = "WeeDux.framework"
-            BlueprintName = "WeeDux"
+            BuildableName = "WeeDux_iOS.framework"
+            BlueprintName = "WeeDux-iOS"
             ReferencedContainer = "container:WeeDux.xcodeproj">
          </BuildableReference>
       </CodeCoverageTargets>
@@ -54,8 +54,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "0AEF06E121DEF1D7005DD460"
-            BuildableName = "WeeDux.framework"
-            BlueprintName = "WeeDux"
+            BuildableName = "WeeDux_iOS.framework"
+            BlueprintName = "WeeDux-iOS"
             ReferencedContainer = "container:WeeDux.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -76,8 +76,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "0AEF06E121DEF1D7005DD460"
-            BuildableName = "WeeDux.framework"
-            BlueprintName = "WeeDux"
+            BuildableName = "WeeDux_iOS.framework"
+            BlueprintName = "WeeDux-iOS"
             ReferencedContainer = "container:WeeDux.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -94,8 +94,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "0AEF06E121DEF1D7005DD460"
-            BuildableName = "WeeDux.framework"
-            BlueprintName = "WeeDux"
+            BuildableName = "WeeDux_iOS.framework"
+            BlueprintName = "WeeDux-iOS"
             ReferencedContainer = "container:WeeDux.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
