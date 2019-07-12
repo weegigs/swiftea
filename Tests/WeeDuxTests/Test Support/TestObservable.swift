@@ -37,7 +37,7 @@ class TestObservable<State>: ObservableType {
   }
 
   private func _subscribe(_ subscriber: @escaping (State) -> Void) -> Subscription<State> {
-    if nil != self.subscriber {
+    if self.subscriber != nil {
       fatalError("test only supports a single subscriber")
     }
 

@@ -65,7 +65,7 @@ private class BaseProgram<Environment, State, Event> {
     }
     let read = { [unowned self] in self.state }
 
-    return middleware.reversed().reduce(run, { next, ware in ware(read, next) })
+    return middleware.reversed().reduce(run) { next, ware in ware(read, next) }
   }()
 
   private var subscriptions: MultiReaderSingleWriter<[String: ReducerSubscription<State>]>
