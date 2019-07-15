@@ -1,8 +1,9 @@
+import Combine
 import XCTest
 
 @testable import WeeDux
 
-final class ReactorTestCase: XCTestCase {
+final class ProgramTestCase: XCTestCase {
   var program: Program<Any, Int, MathEvent>!
   var count: Int = Int.min
   var state: Int = Int.min
@@ -15,8 +16,7 @@ final class ReactorTestCase: XCTestCase {
       self.count += 1
       next(event)
       self.state = state()
-    }
-    }
+    } }
 
     program = Program(state: 0, environment: (), middleware: [counter], handler: math)
   }
@@ -35,7 +35,7 @@ final class ReactorTestCase: XCTestCase {
     let state = program.read()
 
     wait(for: [expectation], timeout: 1)
-    subscription.unsubscribe()
+    subscription.cancel()
 
     XCTAssertEqual(state, 4)
   }
@@ -53,7 +53,7 @@ final class ReactorTestCase: XCTestCase {
     program.dispatch(.multiply(2))
 
     wait(for: [expectation], timeout: 1)
-    subscription.unsubscribe()
+    subscription.cancel()
 
     XCTAssertEqual(state, 4)
     XCTAssertEqual(count, 2)
@@ -70,8 +70,7 @@ final class ReactorTestCase: XCTestCase {
     }
 
     wait(for: [expectation], timeout: 1)
-
-    subsciption.unsubscribe()
+    subsciption.cancel()
 
     XCTAssertEqual(2, state)
     XCTAssertEqual(2, program.read())
@@ -94,7 +93,7 @@ final class ReactorTestCase: XCTestCase {
 
     wait(for: [expectation], timeout: 1)
 
-    subsciption.unsubscribe()
+    subsciption.cancel()
 
     XCTAssert(state == 3)
     XCTAssert(program.read() == 3)
@@ -117,7 +116,7 @@ final class ReactorTestCase: XCTestCase {
 
     wait(for: [expectation], timeout: 1)
 
-    subsciption.unsubscribe()
+    subsciption.cancel()
 
     XCTAssertEqual(state.count, 4)
     XCTAssertEqual(state, [0, 1, 2, 3])

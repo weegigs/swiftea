@@ -3,90 +3,36 @@
 //  Copyright © 2018 Kevin O'Neill. All rights reserved.
 //
 
+import Combine
 import Dispatch
 import Foundation
 
 public typealias DispatchFunction<Event> = (Event) -> Void
 
-public struct Program<Environment, State, Event>: ObservableType {
-  public let execute: (Command<Environment, Event>) -> Void
-  public let dispatch: DispatchFunction<Event>
-  public let subscribe: (_ listener: @escaping Subscription<State>.Listener) -> Subscription<State>
-  public let read: () -> State
+public final class Program<Environment, State, Event>: Publisher {
+  public typealias Output = State
+  public typealias Failure = Never
 
-  public init(
-    execute: @escaping (Command<Environment, Event>) -> Void,
-    dispatch: @escaping (Event) -> Void,
-    subscribe: @escaping (_ listener: @escaping Subscription<State>.Listener) -> Subscription<State>,
-    read: @escaping () -> State
-  ) {
-    self.execute = execute
-    self.dispatch = dispatch
-    self.subscribe = subscribe
-    self.read = read
-  }
-}
-
-public extension Program {
-  init(
-    state: State,
-    environment: Environment,
-    middleware: [Middleware<State, Event>],
-    handler: @escaping EventHandler<Environment, State, Event>
-  ) {
-    let program = BaseProgram(state: state, environment: environment, middleware: middleware, handler: handler)
-
-    self.init(
-      execute: program.execute,
-      dispatch: program.dispatch,
-      subscribe: program.subscribe,
-      read: program.read
-    )
-  }
-}
-
-// internal
-
-private class BaseProgram<Environment, State, Event> {
-  typealias Subscriber<State> = (State) -> Void
-
+  private let state: CurrentValueSubject<State, Never>
   private let updates: DispatchQueue
   private let effects: DispatchQueue
-  private let notifications: DispatchQueue
 
   private let environment: Environment
   private let handler: EventHandler<Environment, State, Event>
   private let middleware: [Middleware<State, Event>]
+
   private lazy var dispatcher: DispatchFunction<Event> = {
     let run = { [unowned self] (event: Event) in
-      let (state, command) = self.handler(self.state, event)
-      self.state = state
-      self.execute(command: command)
+      let (state, command) = self.handler(self.state.value, event)
+      self.state.value = state
+      self.execute(command)
     }
-    let read = { [unowned self] in self.state }
+    let read = { [unowned self] in self.state.value }
 
-    return middleware.reversed().reduce(run) { next, ware in ware(read, next) }
+    return middleware.reduce(run) { next, ware in ware(read, next) }
   }()
 
-  private var subscriptions: MultiReaderSingleWriter<[String: ReducerSubscription<State>]>
-  private var state: State {
-    didSet { notify() }
-  }
-
-  private struct ReducerSubscription<T> {
-    let subscriber: Subscriber<T>
-    let remove: () -> Void
-
-    func notify(_ update: T) {
-      subscriber(update)
-    }
-
-    func unsubscribe() {
-      remove()
-    }
-  }
-
-  init(
+  public init(
     state: State,
     environment: Environment,
     middleware: [Middleware<State, Event>],
@@ -94,62 +40,41 @@ private class BaseProgram<Environment, State, Event> {
   ) {
     updates = DispatchQueue(label: "com.weegigs.dispatcher-\(UUID().uuidString)", attributes: .concurrent)
     effects = DispatchQueue(label: "\(updates.label).effects", attributes: .concurrent)
-    notifications = DispatchQueue(label: "\(updates.label).notifications")
-    subscriptions = MultiReaderSingleWriter([:])
 
-    self.state = state
+    self.state = CurrentValueSubject(state)
     self.environment = environment
-    self.middleware = middleware
+    self.middleware = middleware.reversed()
     self.handler = handler
   }
 
-  func subscribe(subscriber: @escaping (State) -> Void) -> Subscription<State> {
-    let key = UUID().uuidString
-    let subscription = ReducerSubscription(subscriber: subscriber) { [weak self] in
-      guard let self = self else { return }
-
-      self.subscriptions.update { subscriptions in
-        subscriptions.removeValue(forKey: key)
-      }
-    }
-
-    subscriptions.update { subscriptions in
-      subscriptions[key] = subscription
-    }
-
-    let state = read()
-    notifications.async {
-      subscription.notify(state)
-    }
-
-    return Subscription(unsubscribe: subscription.unsubscribe)
+  public func receive<S>(subscriber: S) where S: Subscriber, S.Failure == Never, S.Input == State {
+    state.receive(subscriber: subscriber)
   }
 
-  func read() -> State {
+  public func subscribe(_ subscriber: @escaping (State) -> Void) -> Cancellable {
+    let cancellable = self.sink(
+      receiveCompletion: { _ in },
+      receiveValue: { value in subscriber(value) }
+    )
+
+    return cancellable
+  }
+
+  public func read() -> State {
     return updates.sync {
-      self.state
+      self.state.value
     }
   }
 
-  func dispatch(event: Event) {
+  public func dispatch(_ event: Event) {
     updates.async(flags: .barrier) {
       self.dispatcher(event)
     }
   }
 
-  func execute(command: Command<Environment, Event>) {
+  public func execute(_ command: Command<Environment, Event>) {
     effects.async {
       command.run(self.environment, self.dispatch)
-    }
-  }
-
-  private func notify() {
-    let subscriptions = self.subscriptions.value
-    let state = self.state
-    notifications.async {
-      for (_, subscription) in subscriptions {
-        subscription.notify(state)
-      }
     }
   }
 }
