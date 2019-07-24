@@ -19,7 +19,7 @@ public final class Program<Environment, State, Event>: Publisher {
 
   private let environment: Environment
   private let handler: EventHandler<Environment, State, Event>
-  private let middleware: [Middleware<State, Event>]
+  private let middleware: [Middleware<Environment, State, Event>]
 
   private lazy var dispatcher: DispatchFunction<Event> = {
     let run = { [unowned self] (event: Event) in
@@ -29,13 +29,13 @@ public final class Program<Environment, State, Event>: Publisher {
     }
     let read = { [unowned self] in self.state.value }
 
-    return middleware.reduce(run) { next, ware in ware(read, next) }
+    return middleware.reduce(run) { next, ware in ware(environment, read, next) }
   }()
 
   public init(
     state: State,
     environment: Environment,
-    middleware: [Middleware<State, Event>],
+    middleware: [Middleware<Environment, State, Event>],
     handler: @escaping EventHandler<Environment, State, Event>
   ) {
     updates = DispatchQueue(label: "com.weegigs.dispatcher-\(UUID().uuidString)", attributes: .concurrent)
