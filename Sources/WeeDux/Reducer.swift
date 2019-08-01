@@ -10,9 +10,9 @@ public typealias Reducer<State, Event> = (State, Event) -> State
 
 private func merge<State, Event>(reducers: [Reducer<State, Event>]) -> Reducer<State, Event> {
   return { (state: State, event: Event) in
-    reducers.reduce(state, { current, reducer in
+    reducers.reduce(state) { current, reducer in
       reducer(current, event)
-    })
+    }
   }
 }
 

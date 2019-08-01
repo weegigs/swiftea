@@ -7,11 +7,11 @@ public typealias EventHandler<Environment, State, Event> = (State, Event) -> (St
 
 private func merge<Environment, State, Event>(_ handlers: [EventHandler<Environment, State, Event>]) -> EventHandler<Environment, State, Event> {
   return { (state: State, event: Event) in
-    let reduced: (State, [Command<Environment, Event>]) = handlers.reduce((state, []), { current, processor in
+    let reduced: (State, [Command<Environment, Event>]) = handlers.reduce((state, [])) { current, processor in
       let (state, commands) = current
       let (updated, command) = processor(state, event)
       return (updated, commands + [command])
-    })
+    }
 
     return (reduced.0, .batch(reduced.1))
   }
