@@ -12,9 +12,9 @@ final class ProgramTestCase: XCTestCase {
     count = 0
     state = 0
 
-    let counter: Middleware<Any, Int, MathEvent> = { _, state, next in { event in
+    let counter: Middleware<Any, Int, MathEvent> = { _, state, next in { message in
       self.count += 1
-      next(event)
+      next(message)
       self.state = state()
     } }
 

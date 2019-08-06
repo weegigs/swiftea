@@ -3,4 +3,4 @@
 // Copyright (c) 2019 Kevin O'Neill. All rights reserved.
 //
 
-public typealias Middleware<Environment, State, Event> = (Environment, @escaping () -> State, @escaping DispatchFunction<Event>) -> DispatchFunction<Event>
+public typealias Middleware<Environment, State, Message> = (Environment, @escaping () -> State, @escaping DispatchFunction<Message>) -> DispatchFunction<Message>

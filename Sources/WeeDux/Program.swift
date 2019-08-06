@@ -7,9 +7,9 @@ import Combine
 import Dispatch
 import Foundation
 
-public typealias DispatchFunction<Event> = (Event) -> Void
+public typealias DispatchFunction<Message> = (Message) -> Void
 
-public final class Program<Environment, State, Event>: Publisher {
+public final class Program<Environment, State, Message>: Publisher {
   public typealias Output = State
   public typealias Failure = Never
 
@@ -18,12 +18,13 @@ public final class Program<Environment, State, Event>: Publisher {
   private let effects: DispatchQueue
 
   private let environment: Environment
-  private let handler: EventHandler<Environment, State, Event>
-  private let middleware: [Middleware<Environment, State, Event>]
+  private let handler: MessageHandler<Environment, State, Message>
+  private let middleware: [Middleware<Environment, State, Message>]
 
-  private lazy var dispatcher: DispatchFunction<Event> = {
-    let run = { [unowned self] (event: Event) in
-      let (state, command) = self.handler(self.state.value, event)
+  private lazy var dispatcher: DispatchFunction<Message> = {
+    let run = { [unowned self] (message: Message) in
+      var state = self.state.value
+      let command = self.handler.run(state: &state, message: message)
       self.state.value = state
       self.execute(command)
     }
@@ -35,8 +36,8 @@ public final class Program<Environment, State, Event>: Publisher {
   public init(
     state: State,
     environment: Environment,
-    middleware: [Middleware<Environment, State, Event>],
-    handler: @escaping EventHandler<Environment, State, Event>
+    middleware: [Middleware<Environment, State, Message>],
+    handler: MessageHandler<Environment, State, Message>
   ) {
     updates = DispatchQueue(label: "com.weegigs.dispatcher-\(UUID().uuidString)", attributes: .concurrent)
     effects = DispatchQueue(label: "\(updates.label).effects", attributes: .concurrent)
@@ -52,7 +53,7 @@ public final class Program<Environment, State, Event>: Publisher {
   }
 
   public func subscribe(_ subscriber: @escaping (State) -> Void) -> Cancellable {
-    let cancellable = self.sink(
+    let cancellable = sink(
       receiveCompletion: { _ in },
       receiveValue: { value in subscriber(value) }
     )
@@ -66,13 +67,13 @@ public final class Program<Environment, State, Event>: Publisher {
     }
   }
 
-  public func dispatch(_ event: Event) {
+  public func dispatch(_ message: Message) {
     updates.async(flags: .barrier) {
-      self.dispatcher(event)
+      self.dispatcher(message)
     }
   }
 
-  public func execute(_ command: Command<Environment, Event>) {
+  public func execute(_ command: Command<Environment, Message>) {
     effects.async {
       command.run(self.environment, self.dispatch)
     }

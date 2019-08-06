@@ -1,6 +1,6 @@
 //
 //  Program+Persistence.swift
-//  
+//
 //
 //  Created by Kevin O'Neill on 24/7/19.
 //
@@ -26,13 +26,13 @@ private func _write<State: Codable>(state: State, to destination: URL) {
 }
 
 public extension Program where State: Codable {
-  convenience init(from: URL = defaultFile(), initial: State, environment: Environment, middleware: [Middleware<Environment, State, Event>] = [], handler: @escaping EventHandler<Environment, State, Event>) {
+  convenience init(from: URL = defaultFile(), initial: State, environment: Environment, middleware: [Middleware<Environment, State, Message>] = [], handler: MessageHandler<Environment, State, Message>) {
     guard from.isFileURL else {
       fatalError("stored location must be a file url")
     }
 
-    let persistence: Middleware<Environment, State, Event> = { _, state, next in { event in
-      next(event)
+    let persistence: Middleware<Environment, State, Message> = { _, state, next in { message in
+      next(message)
       _write(state: state(), to: from)
     } }
     let persisted = middleware + [persistence]
@@ -64,4 +64,3 @@ public extension Program where State: Codable {
     return library.appendingPathComponent("weedux-storage.json").standardizedFileURL
   }
 }
-
