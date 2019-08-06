@@ -63,6 +63,11 @@ public func <> <State, Message>(
   _ second: Reducer<State, Message>
 ) -> Reducer<State, Message> { Reducer(first, second) }
 
+public func <> <State, Message>(
+  _ first: Reducer<State, Message>,
+  _ second: Reducer<State, Message>
+) -> Reducer<State, Message> { first.merge(second) }
+
 public extension Reducer {
   init<Value>(path: WritableKeyPath<State, Value>, reducer: Reducer<Value, Message>) {
     self.init { state, message in
