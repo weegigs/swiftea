@@ -8,23 +8,23 @@ import XCTest
 
 class EventHandlerTestCase: XCTestCase {
   func augment(_ suffix: String) -> ((inout [String], String) -> Command<Any, String>) {
-    return { ( state, message) -> Command<Any, String> in
+    return { (state, message) -> Command<Any, String> in
       state += ["\(message)-\(suffix)"]
-      
+
       return .none
     }
   }
 
   func add(state: inout [String], message: String) -> Command<Any, String> {
     state += [message]
-    
+
     return .none
   }
 
   func testCombineTwoReducers() {
     let reducer = augment("a") <> augment("b")
     var result = ["one"]
-     
+
     _ = reducer.run(state: &result, message: "two")
 
     XCTAssertEqual(result, ["one", "two-a", "two-b"])
@@ -33,7 +33,7 @@ class EventHandlerTestCase: XCTestCase {
   func testCombineThreeReducers() {
     let reducer = add <> augment("a") <> augment("b")
     var result = ["one"]
-     
+
     _ = reducer.run(state: &result, message: "two")
 
     XCTAssertEqual(result, ["one", "two", "two-a", "two-b"])
@@ -42,7 +42,7 @@ class EventHandlerTestCase: XCTestCase {
   func testCombineOperater() {
     let reducer = add <> augment("a") <> augment("b")
     var result = ["one"]
-     
+
     _ = reducer.run(state: &result, message: "two")
 
     XCTAssertEqual(result, ["one", "two", "two-a", "two-b"])
