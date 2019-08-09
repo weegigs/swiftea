@@ -15,6 +15,10 @@ let package = Package(
       name: "WeeDux",
       targets: ["WeeDux"]
     ),
+  .library(
+    name: "SwifTEA",
+    targets: ["SwifTEA"]
+  ),
   ],
   dependencies: [
     // Dependencies declare other packages that this package depends on.
@@ -26,6 +30,10 @@ let package = Package(
     .target(
       name: "WeeDux",
       dependencies: []
+    ),
+    .target(
+      name: "SwifTEA",
+      dependencies: ["WeeDux"]
     ),
     .testTarget(
       name: "WeeDuxTests",
