@@ -8,8 +8,8 @@
 
 import SwiftUI
 
-struct StateContainer<Environment, State, Message, Props, Content>: View where Content: View {
-  typealias Dispatcher = Store<Environment, State, Message>.Dispatcher
+public struct StateContainer<Environment, State, Message, Props, Content>: View where Content: View {
+  public typealias Dispatcher = Store<Environment, State, Message>.Dispatcher
 
   @EnvironmentObject private var store: Store<Environment, State, Message>
   @EnvironmentObject private var dispatcher: Dispatcher
@@ -27,20 +27,20 @@ struct StateContainer<Environment, State, Message, Props, Content>: View where C
   }
 }
 
-extension StateContainer {
-  public init(_ keypath: KeyPath<State, Props>, render: @escaping (Props, Dispatcher) -> Content) {
+public extension StateContainer {
+  init(_ keypath: KeyPath<State, Props>, render: @escaping (Props, Dispatcher) -> Content) {
     self.init(read: { $0[keyPath: keypath] }, render: render)
   }
 
-  public init<A, B>(_ a: KeyPath<State, A>, _ b: KeyPath<State, B>, render: @escaping ((A, B), Dispatcher) -> Content) where Props == (A, B) {
+  init<A, B>(_ a: KeyPath<State, A>, _ b: KeyPath<State, B>, render: @escaping ((A, B), Dispatcher) -> Content) where Props == (A, B) {
     self.init(read: { ($0[keyPath: a], $0[keyPath: b]) }, render: render)
   }
 
-  public init<A, B, C>(_ a: KeyPath<State, A>, _ b: KeyPath<State, B>, _ c: KeyPath<State, C>, render: @escaping ((A, B, C), Dispatcher) -> Content) where Props == (A, B, C) {
+  init<A, B, C>(_ a: KeyPath<State, A>, _ b: KeyPath<State, B>, _ c: KeyPath<State, C>, render: @escaping ((A, B, C), Dispatcher) -> Content) where Props == (A, B, C) {
     self.init(read: { ($0[keyPath: a], $0[keyPath: b], $0[keyPath: c]) }, render: render)
   }
 
-  public init<A, B, C, D>(_ a: KeyPath<State, A>, _ b: KeyPath<State, B>, _ c: KeyPath<State, C>, _ d: KeyPath<State, D>, render: @escaping ((A, B, C, D), Dispatcher) -> Content) where Props == (A, B, C, D) {
+  init<A, B, C, D>(_ a: KeyPath<State, A>, _ b: KeyPath<State, B>, _ c: KeyPath<State, C>, _ d: KeyPath<State, D>, render: @escaping ((A, B, C, D), Dispatcher) -> Content) where Props == (A, B, C, D) {
     self.init(read: { ($0[keyPath: a], $0[keyPath: b], $0[keyPath: c], $0[keyPath: d]) }, render: render)
   }
 }
