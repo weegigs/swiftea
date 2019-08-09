@@ -9,18 +9,18 @@
 import SwiftUI
 import WeeDux
 
-struct StoreContainer<Environment, State, Message, Content>: View where Content: View {
+public struct StoreContainer<Environment, State, Message, Content>: View where Content: View {
   @ObservedObject private var store: Store<Environment, State, Message>
 
   private let content: () -> Content
 
-  var body: some View {
+  public var body: some View {
     content()
       .environmentObject(self.store)
       .environmentObject(self.store.dispatcher)
   }
 
-  init(for store: Store<Environment, State, Message>, content: @escaping () -> Content) {
+  public init(for store: Store<Environment, State, Message>, content: @escaping () -> Content) {
     self.store = store
     self.content = content
   }
