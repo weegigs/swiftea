@@ -14,28 +14,30 @@ enum MathEvent: Equatable {
   case divide(_ factor: Int)
 }
 
-let incrementReducer = { (state: Int, event: MathEvent) -> Int in
-  guard case let .increment(amount) = event else { return state }
+let incrementReducer = { (state: inout Int, message: MathEvent) -> Void in
+  guard case let .increment(amount) = message else { return }
 
-  return state + amount
+  state += amount
 }
 
-let decrementReducer = { (state: Int, event: MathEvent) -> Int in
-  guard case let .decrement(amount) = event else { return state }
+let decrementReducer = { (state: inout Int, message: MathEvent) -> Void in
+  guard case let .decrement(amount) = message else { return }
 
-  return state - amount
+  state -= amount
 }
 
-let multiplyReducer = { (state: Int, event: MathEvent) -> Int in
-  guard case let .multiply(factor) = event else { return state }
+let multiplyReducer = { (state: inout Int, message: MathEvent) -> Void in
+  guard case let .multiply(factor) = message else { return }
 
-  return state * factor
+  state *= factor
 }
 
-let divideReducer = { (state: Int, event: MathEvent) -> Int in
-  guard case let .divide(factor) = event else { return state }
+let divideReducer = { (state: inout Int, message: MathEvent) -> Void in
+  guard case let .divide(factor) = message else { return }
 
-  return state / factor
+  state /= factor
 }
 
-let math: EventHandler<Any, Int, MathEvent> = handler(incrementReducer <> decrementReducer <> multiplyReducer <> divideReducer)
+let reducer = incrementReducer <> decrementReducer <> multiplyReducer <> divideReducer
+
+let math: MessageHandler<Any, Int, MathEvent> = MessageHandler(reducer: reducer)

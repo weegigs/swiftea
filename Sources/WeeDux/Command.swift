@@ -9,8 +9,8 @@
 import Dispatch
 import Foundation
 
-public struct Command<Environment, Event> {
-  public typealias Effect = (Environment, @escaping (Event) -> Void) -> Void
+public struct Command<Environment, Message> {
+  public typealias Effect = (Environment, @escaping (Message) -> Void) -> Void
   public let run: Effect
 
   public init(effect: @escaping Effect) {
@@ -19,17 +19,17 @@ public struct Command<Environment, Event> {
 }
 
 public extension Command {
-  static var none: Command<Environment, Event> {
+  static var none: Command<Environment, Message> {
     return Command { _, _ in }
   }
 
   /**
    * Batching makes no guarentees about execution order
    */
-  static func batch<Environment, Event>(
-    _ commands: [Command<Environment, Event>]
-  ) -> Command<Environment, Event> {
-    return Command<Environment, Event> { environment, projection in
+  static func batch<Environment, Message>(
+    _ commands: [Command<Environment, Message>]
+  ) -> Command<Environment, Message> {
+    return Command<Environment, Message> { environment, projection in
       let queue = DispatchQueue(label: "com.weegigs.command.combined.\(UUID().uuidString)", attributes: .concurrent)
       for command in commands {
         queue.async {
@@ -40,9 +40,9 @@ public extension Command {
   }
 }
 
-public func <> <Event, Environment>(
-  _ first: Command<Environment, Event>,
-  _ second: Command<Environment, Event>
-) -> Command<Environment, Event> {
-  return Command<Environment, Event>.batch([first, second])
+public func <> <Message, Environment>(
+  _ first: Command<Environment, Message>,
+  _ second: Command<Environment, Message>
+) -> Command<Environment, Message> {
+  return Command<Environment, Message>.batch([first, second])
 }
