@@ -4,13 +4,17 @@ SwifTEA is a small implementation of  the **Model** and **Update** aspects of [*
 
 `SwifTEA` has a companion library `SwifTEAUI` which provides integration components for `SwiftUI`
 
+## Semantic Versioning
+
+**SwifTEA** uses [semantic versioning](https://semver.org). Until version `1.0.0` breaking changes may be introduced on minor version number changes. Bug fixes and backward compatible features will be added on patch versions. You should take this into account when setting your package dependency details.
+
 ## Installation
 
 `SwifTEA` is available via the swift package manager.
 
 ```swift
 dependencies: [
-  .Package(url: https://github.com/weegigs/swiftea.git", majorVersion: <majorVersion>, minor: <minor>)
+  .package(url: "https://github.com/weegigs/swiftea.git", .upToNextMinor(from: "0.13.0"))
 ]
 ```
 
@@ -43,7 +47,7 @@ In it's most fundamental form a `MessageHandler` is a function `(Model[^1], Mess
 
 ## WeeDux
 
-`SwifTEA` started life as a `FLUX` style library. It was quickly apparent that without explicit side effect handling I was leaving a lot of usefulness on the table. By moving to an `Elm` styled approach I was able to create a specific place to manage side effects and, as a bonus, manage dependency injection for side effect producing operations. Though the base architectural approach had changed I stuck with `WeeDux` name because that was the name I had.
+`SwifTEA` started life as a `FLUX` style library and the name `WeeDux` fit nicely with the theme (a small `Flux` library). It was quickly apparent to me that without explicit side effect handling I was leaving a lot of usefulness on the table. By moving to an `Elm` styled approach I was able to create a specific place to manage side effects and, as a bonus, manage dependency injection for side effect producing operations. Though the base architectural approach had changed I stuck with `WeeDux` name because that was the name I had.
 
 When [@mattdelves](https://twitter.com/mattdelves) suggested **SwifTEA UI** for the name of my talk on combining `WeeDux` with `SwiftUI`, like the original architectural change, the name change was apparent.
 
