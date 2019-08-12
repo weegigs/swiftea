@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import SwifTEA
 import SwiftUI
-import WeeDux
 
 public struct StoreContainer<Environment, State, Message, Content>: View where Content: View {
   @ObservedObject private var store: Store<Environment, State, Message>

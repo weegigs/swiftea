@@ -20,14 +20,48 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#import <Foundation/Foundation.h>
+import SwifTEA
+import XCTest
 
-//! Project version number for WeeDux.
-FOUNDATION_EXPORT double WeeDuxVersionNumber;
+class EventHandlerTestCase: XCTestCase {
+  func augment(_ suffix: String) -> ((inout [String], String) -> Command<Any, String>) {
+    return { (state, message) -> Command<Any, String> in
+      state += ["\(message)-\(suffix)"]
 
-//! Project version string for WeeDux.
-FOUNDATION_EXPORT const unsigned char WeeDuxVersionString[];
+      return .none
+    }
+  }
 
-// In this header, you should import all the public headers of your framework using statements like #import <WeeDux/PublicHeader.h>
+  func add(state: inout [String], message: String) -> Command<Any, String> {
+    state += [message]
 
+    return .none
+  }
 
+  func testCombineTwoReducers() {
+    let reducer = augment("a") <> augment("b")
+    var result = ["one"]
+
+    _ = reducer.run(state: &result, message: "two")
+
+    XCTAssertEqual(result, ["one", "two-a", "two-b"])
+  }
+
+  func testCombineThreeReducers() {
+    let reducer = add <> augment("a") <> augment("b")
+    var result = ["one"]
+
+    _ = reducer.run(state: &result, message: "two")
+
+    XCTAssertEqual(result, ["one", "two", "two-a", "two-b"])
+  }
+
+  func testCombineOperater() {
+    let reducer = add <> augment("a") <> augment("b")
+    var result = ["one"]
+
+    _ = reducer.run(state: &result, message: "two")
+
+    XCTAssertEqual(result, ["one", "two", "two-a", "two-b"])
+  }
+}

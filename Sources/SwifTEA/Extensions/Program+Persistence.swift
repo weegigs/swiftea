@@ -23,7 +23,7 @@
 import Dispatch
 import Foundation
 
-private let queue = DispatchQueue(label: "au.id.oneill.weedux.persistence", qos: .background)
+private let queue = DispatchQueue(label: "au.id.oneill.swiftea.persistence", qos: .background)
 
 private func _write<State: Codable>(state: State, to destination: URL) {
   guard destination.isFileURL else {
@@ -76,6 +76,6 @@ public extension Program where State: Codable {
 
   static func defaultFile() -> URL {
     let library = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first!
-    return library.appendingPathComponent("weedux-storage.json").standardizedFileURL
+    return library.appendingPathComponent("swiftea-storage.json").standardizedFileURL
   }
 }

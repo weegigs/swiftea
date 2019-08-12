@@ -20,39 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-@testable import WeeDux
+#import <Foundation/Foundation.h>
 
-enum MathEvent: Equatable {
-  case increment(_ amount: Int)
-  case decrement(_ amount: Int)
-  case multiply(_ factor: Int)
-  case divide(_ factor: Int)
-}
+//! Project version number for SwifTEA.
+FOUNDATION_EXPORT double SwifTEAVersionNumber;
 
-let incrementReducer = { (state: inout Int, message: MathEvent) -> Void in
-  guard case let .increment(amount) = message else { return }
+//! Project version string for SwifTEA.
+FOUNDATION_EXPORT const unsigned char SwifTEAVersionString[];
 
-  state += amount
-}
+// In this header, you should import all the public headers of your framework using statements like #import <SwifTEA/PublicHeader.h>
 
-let decrementReducer = { (state: inout Int, message: MathEvent) -> Void in
-  guard case let .decrement(amount) = message else { return }
 
-  state -= amount
-}
-
-let multiplyReducer = { (state: inout Int, message: MathEvent) -> Void in
-  guard case let .multiply(factor) = message else { return }
-
-  state *= factor
-}
-
-let divideReducer = { (state: inout Int, message: MathEvent) -> Void in
-  guard case let .divide(factor) = message else { return }
-
-  state /= factor
-}
-
-let reducer = incrementReducer <> decrementReducer <> multiplyReducer <> divideReducer
-
-let math: MessageHandler<Any, Int, MathEvent> = MessageHandler(reducer: reducer)

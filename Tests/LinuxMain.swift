@@ -22,8 +22,8 @@
 
 import XCTest
 
-import WeeDuxTests
+import SwifTEATests
 
 var tests = [XCTestCaseEntry]()
-tests += WeeDuxTests.allTests()
+tests += SwifTEATests.allTests()
 XCTMain(tests)

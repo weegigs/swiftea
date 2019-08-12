@@ -21,8 +21,8 @@
 // SOFTWARE.
 
 import Combine
+import SwifTEA
 import SwiftUI
-import WeeDux
 
 public final class Store<Environment, Model, Message>: ObservableObject {
   public final class Dispatcher: ObservableObject {
@@ -32,7 +32,7 @@ public final class Store<Environment, Model, Message>: ObservableObject {
       program.dispatch(message)
     }
 
-    public func send(_ command: WeeDux.Command<Environment, Message>) {
+    public func send(_ command: SwifTEA.Command<Environment, Message>) {
       program.execute(command)
     }
 

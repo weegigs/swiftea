@@ -70,12 +70,7 @@ public final class Program<Environment, State, Message>: Publisher {
   }
 
   public func subscribe(_ subscriber: @escaping (State) -> Void) -> Cancellable {
-    let cancellable = sink(
-      receiveCompletion: { _ in },
-      receiveValue: { value in subscriber(value) }
-    )
-
-    return cancellable
+    return sink { value in subscriber(value) }
   }
 
   public func read() -> State {

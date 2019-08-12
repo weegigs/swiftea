@@ -1,36 +1,75 @@
-# WeeDux
+# SwifTEA
 
-WeeDux is a small implementation of  the **Model** and **Update** aspects of [**TEA**](https://guide.elm-lang.org/architecture/).
+SwifTEA is a small implementation of  the **Model** and **Update** aspects of [**TEA**](https://guide.elm-lang.org/architecture/).
 
-`WeeDux` has a companion library `SwifTEA` which provides integration components for `SwiftUI`
+`SwifTEA` has a companion library `SwifTEAUI` which provides integration components for `SwiftUI`
 
 ## Installation
 
-`WeeDux` is available via the swift package manager.
+`SwifTEA` is available via the swift package manager.
 
-```
+```swift
 dependencies: [
-  .Package(url: https://github.com/weegigs/weedux.git", majorVersion: <majorVersion>, minor: <minor>)
+  .Package(url: https://github.com/weegigs/swiftea.git", majorVersion: <majorVersion>, minor: <minor>)
 ]
 ```
 
 ## Examples
 
-* [**QOTD**](https://github.com/weegigs/qotd) - An example application using `WeeDux`, `SwifTEA` and `SwiftUI`.
+* [**QOTD**](https://github.com/weegigs/qotd) - An example application using `SwifTEA`, `SwifTEAUI` and `SwiftUI`.
 
 ## Overview
 
 > The documentation below is only partially complete. Slides from the the talk
-[SwifTEA UI - Unidirectional dataflow with SwiftUI and WeeDux](https://www.slideshare.net/KevinONeill1/swiftea-ui-unidirectional-data-flow-with-swiftui-and-weedux) at the Melbourne CocoaHeads meetup in August 2019 are available on [SlideShare](https://www.slideshare.net/KevinONeill1/swiftea-ui-unidirectional-data-flow-with-swiftui-and-weedux)
+[SwifTEA UI - Unidirectional dataflow with SwiftUI and SwifTEA](https://www.slideshare.net/KevinONeill1/swiftea-ui-unidirectional-data-flow-with-swiftui-and-SwifTEA) at the Melbourne CocoaHeads meetup in August 2019 are available on [SlideShare](https://www.slideshare.net/KevinONeill1/swiftea-ui-unidirectional-data-flow-with-swiftui-and-SwifTEA)
 
-A `WeeDux` `Program` state is driven by two separate components:
+A `SwifTEA` `Program` state is driven by two separate components:
 
-* **Model** - current state of the reactor
-* **Messages** - changes that influence the state of the model. Message are updates in **TEA** terms. The term message is used as they represent something that has happened rather than something you want to happen. This makes modeling a system easier than the terms used in other TEA derivatives such as **Action** which is a little ambiguous and could easily be confused with command
+* **Model** - current state of the program
+* **Messages** - changes that influence the state of the model. Message are updates in **TEA** terms. I use the term message is used as they represent something that has happened rather than something you want to happen. This makes modeling a system easier than the terms used in other TEA derivatives such as **Action** which is a little ambiguous and could easily be confused with command
   
-`WeeDux` also provides an execution environment for operations that rely on external components (i.e. state that is not directly managed via messages) in the form of:
+`SwifTEA` also provides an execution environment for operations that rely on external components (i.e. state that is not directly managed via messages) in the form of:
 
 * **Command** - an async operation that produces messages. `Command` dependencies are supplied by the environment
 * **Environment** - A container for `Command` dependencies
 
-The model is updated as events are applied to the model via a `MessageHandler`
+## Basic Operation
+
+The model is updated as **messages** are applied to the model via a `MessageHandler`.
+
+In it's most fundamental form a `MessageHandler` is a function `(Model[^1], Message) -> (Model[^1], Command)`. It takes a `Model` and a `Message` and produces a new `Model` along with any side effects you want to trigger in the form of a `Command`.
+
+`SwifTEA` provides a simplified `MessageHandler`, `Reducer` that lacks the `Command` output. This helps with the ergonomics when creating a `MessageHandler` that simply updates the `Model`
+
+## WeeDux
+
+`SwifTEA` started life as a `FLUX` style library. It was quickly apparent that without explicit side effect handling I was leaving a lot of usefulness on the table. By moving to an `Elm` styled approach I was able to create a specific place to manage side effects and, as a bonus, manage dependency injection for side effect producing operations. Though the base architectural approach had changed I stuck with `WeeDux` name because that was the name I had.
+
+When [@mattdelves](https://twitter.com/mattdelves) suggested **SwifTEA UI** for the name of my talk on combining `WeeDux` with `SwiftUI`, like the original architectural change, the name change was apparent.
+
+## License
+
+MIT License
+
+Copyright (c) 2019 Kevin O'Neill
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+## Footnotes
+
+[^1]: The model is passed as an `inout` variable for ergonomic reasons

@@ -23,7 +23,7 @@
 import Combine
 import XCTest
 
-@testable import WeeDux
+@testable import SwifTEA
 
 final class ProgramTestCase: XCTestCase {
   var program: Program<Any, Int, MathEvent>!
@@ -97,6 +97,24 @@ final class ProgramTestCase: XCTestCase {
     XCTAssertEqual(2, state)
     XCTAssertEqual(2, program.read())
   }
+
+  func testSinkCurrentValueIsProvided() {
+    let expectation = XCTestExpectation(description: "subscription delivered")
+    var state: Int!
+
+    program.dispatch(.increment(2))
+    let subsciption = program.sink {
+      state = $0
+      expectation.fulfill()
+    }
+
+    wait(for: [expectation], timeout: 1)
+    subsciption.cancel()
+
+    XCTAssertEqual(2, state)
+    XCTAssertEqual(2, program.read())
+  }
+
 
   func testSubscibeProvidesSubsequentValues() {
     let expectation = XCTestExpectation(description: "subscription delivered")

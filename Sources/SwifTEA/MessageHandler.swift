@@ -54,11 +54,19 @@ public struct MessageHandler<Environment, State, Message> {
   }
 
   public init(reducer: Reducer<State, Message>) {
-    self.init { state, message in
+    self.init(handler: { state, message in
       reducer.run(state: &state, message: message)
       return .none
-    }
+    })
   }
+
+  // KAO: I need to look at removing Reducers as a distinct type
+  // public init(reducer: @escaping ReducerFunction<State, Message>) {
+  //   self.init(handler: { state, message in
+  //     reducer(&state, message)
+  //     return .none
+  //   })
+  // }
 }
 
 extension MessageHandler {
