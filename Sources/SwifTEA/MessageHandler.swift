@@ -34,7 +34,6 @@ public typealias ReducerFunction<State, Message> = (inout State, Message) -> Voi
  Processes `State` for `Message` updating `State` and returning a `Command`
  */
 public struct MessageHandler<Environment, State, Message> {
-  
   /// A convienince method that creates a `MessageHandler` from one or more `HandlerFunction`s and returns a `Command` that
   /// batchs the commands from the `HandlerFunction`s.
   ///
@@ -89,25 +88,25 @@ public struct MessageHandler<Environment, State, Message> {
   public static func reducer(_ reducers: ReducerFunction<State, Message>...) -> MessageHandler<Environment, State, Message> {
     return MessageHandler(reducers: reducers)
   }
-  
+
   private let handlers: [HandlerFunction<Environment, State, Message>]
 
   private init(handlers: [HandlerFunction<Environment, State, Message>]) {
     assert(!handlers.isEmpty, "You must supply at least one HandlerFunction")
     self.handlers = handlers
   }
-  
+
   private init(reducers: [ReducerFunction<State, Message>]) {
     assert(!reducers.isEmpty, "You must supply at least one ReducerFunction")
     self.init(handlers: { state, message in
       for reducer in reducers {
         reducer(&state, message)
       }
-      
+
       return .none
     })
   }
-  
+
   /// Creates a `MessageHandler` from one or more `HandlerFunction`s and returns a `Command` that
   /// batchs the commands from the supplied `HandlerFunction`s.
   ///
@@ -135,7 +134,7 @@ public struct MessageHandler<Environment, State, Message> {
   public init(handlers: HandlerFunction<Environment, State, Message>...) {
     self.init(handlers: handlers)
   }
-  
+
   /// Creates a `MessageHandler` from one or more `ReducerFunction`s that always returns `Command.none`.
   ///
   /// It can be used to create a single `MessageHandler`
@@ -168,7 +167,7 @@ public struct MessageHandler<Environment, State, Message> {
       commands.append(handler(&state, message))
     }
 
-    return .batch(commands)
+    return commands.count == 1 ? commands[0] : .batch(commands)
   }
 
   public func merge(_ handler: MessageHandler<Environment, State, Message>) -> MessageHandler<Environment, State, Message> {
@@ -182,27 +181,60 @@ public struct MessageHandler<Environment, State, Message> {
   public func merge(_ reducer: @escaping ReducerFunction<State, Message>) -> MessageHandler<Environment, State, Message> {
     return merge(MessageHandler(reducers: reducer))
   }
-
 }
 
-extension MessageHandler {
-  private init<Value>(path: WritableKeyPath<State, Value>, handler: MessageHandler<Environment, Value, Message>) {
-    self.init(handlers: { state, message in
+public extension MessageHandler {
+  /// **Lifts** the message handler into a new context.
+  ///
+  /// ```
+  ///   let handler: TestMessageHandler = mathHandler.lift(\.number)
+  /// ```
+  ///
+  /// - Parameters:
+  ///   - path: The `WritableKeyPath` in the outer context to read and write
+  ///
+  /// - Returns:
+  ///   A `MessageHandler` that executes the lifted context
+  ///
+  /// - Requires:
+  ///   - Message must castable to M
+  ///   - E must be castable to Environment
+  ///
+  func lift<E, S, M>(_ path: WritableKeyPath<S, State>) -> MessageHandler<E, S, M> {
+    MessageHandler<E, S, M>(handlers: { state, message in
+      guard let msg = message as? Message else { return .none }
+
       var value = state[keyPath: path]
-      let command = handler.run(state: &value, message: message)
+      let result = self.run(state: &value, message: msg)
       state[keyPath: path] = value
 
-      return command
+      return Command<E, M>(effect: { environment, publish in
+        guard let environment = environment as? Environment else {
+          fatalError("environment \(type(of: E.self)) cant be converted to \(Environment.self)")
+        }
+
+        let send = { (message: Message) -> Void in
+          guard let message = message as? M else {
+            fatalError("message \(type(of: Message.self)) cant be converted to \(M.self)")
+          }
+
+          publish(message)
+        }
+
+        result.run(environment, send)
+      })
     })
   }
+}
 
-  init<Value>(path: WritableKeyPath<State, Value>, handler: @escaping HandlerFunction<Environment, Value, Message>) {
-    self.init(path: path, handler: .handler(handler))
-  }
+func lift<Environment, State, Message, Value>(path: WritableKeyPath<State, Value>, handler: MessageHandler<Environment, Value, Message>) -> MessageHandler<Environment, State, Message> {
+  MessageHandler(handlers: { state, message in
+    var value = state[keyPath: path]
+    let command = handler.run(state: &value, message: message)
+    state[keyPath: path] = value
 
-  init<Value>(path: WritableKeyPath<State, Value>, reducer: @escaping ReducerFunction<Value, Message>) {
-    self.init(path: path, handler: .reducer(reducer))
-  }
+    return command
+  })
 }
 
 public func <> <Environment, State, Message>(
