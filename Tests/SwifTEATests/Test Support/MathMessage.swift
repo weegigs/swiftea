@@ -22,36 +22,38 @@
 
 @testable import SwifTEA
 
-enum MathEvent: Equatable {
+protocol MathEnvironment {}
+
+enum MathMessage: Equatable {
   case increment(_ amount: Int)
   case decrement(_ amount: Int)
   case multiply(_ factor: Int)
   case divide(_ factor: Int)
 }
 
-let incrementReducer = { (state: inout Int, message: MathEvent) -> Void in
+let incrementReducer = { (state: inout Int, message: MathMessage) -> Void in
   guard case let .increment(amount) = message else { return }
 
   state += amount
 }
 
-let decrementReducer = { (state: inout Int, message: MathEvent) -> Void in
+let decrementReducer = { (state: inout Int, message: MathMessage) -> Void in
   guard case let .decrement(amount) = message else { return }
 
   state -= amount
 }
 
-let multiplyReducer = { (state: inout Int, message: MathEvent) -> Void in
+let multiplyReducer = { (state: inout Int, message: MathMessage) -> Void in
   guard case let .multiply(factor) = message else { return }
 
   state *= factor
 }
 
-let divideReducer = { (state: inout Int, message: MathEvent) -> Void in
+let divideReducer = { (state: inout Int, message: MathMessage) -> Void in
   guard case let .divide(factor) = message else { return }
 
   state /= factor
 }
 
-typealias MathHandler = MessageHandler<Any, Int, MathEvent>
-let math: MathHandler = .reducer(incrementReducer, decrementReducer, multiplyReducer, divideReducer)
+typealias MathHandler = MessageHandler<MathEnvironment, Int, MathMessage>
+let mathHandler: MathHandler = .reducer(incrementReducer, decrementReducer, multiplyReducer, divideReducer)

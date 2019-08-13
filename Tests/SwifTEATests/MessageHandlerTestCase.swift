@@ -23,7 +23,7 @@
 import SwifTEA
 import XCTest
 
-class EventHandlerTestCase: XCTestCase {
+class MessageHandlerTestCase: XCTestCase {
   func augment(_ suffix: String) -> ((inout [String], String) -> Command<Any, String>) {
     return { (state, message) -> Command<Any, String> in
       state += ["\(message)-\(suffix)"]

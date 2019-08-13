@@ -26,7 +26,7 @@ import XCTest
 @testable import SwifTEA
 
 final class ProgramTestCase: XCTestCase {
-  var program: Program<Any, Int, MathEvent>!
+  var program: Program<MathEnvironment, Int, MathMessage>!
   var count: Int = Int.min
   var state: Int = Int.min
 
@@ -34,13 +34,13 @@ final class ProgramTestCase: XCTestCase {
     count = 0
     state = 0
 
-    let counter: Middleware<Any, Int, MathEvent> = { _, state, next in { message in
+    let counter: Middleware<MathEnvironment, Int, MathMessage> = { _, read, next in { message in
       self.count += 1
       next(message)
-      self.state = state()
+      self.state = read()
     } }
 
-    program = Program(state: 0, environment: (), middleware: [counter], handler: math)
+    program = Program(state: 0, environment: TestCaseEnvironment(), middleware: [counter], handler: mathHandler)
   }
 
   func testDispatch() {
