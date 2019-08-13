@@ -23,6 +23,8 @@
 import Dispatch
 import Foundation
 
+private let queue = DispatchQueue(label: "com.weegigs.swiftea.command.batch", attributes: .concurrent)
+
 public struct Command<Environment, Message> {
   public typealias Effect = (Environment, @escaping (Message) -> Void) -> Void
   public let run: Effect
@@ -44,7 +46,6 @@ public extension Command {
     _ commands: [Command<Environment, Message>]
   ) -> Command<Environment, Message> {
     return Command<Environment, Message> { environment, projection in
-      let queue = DispatchQueue(label: "com.weegigs.command.combined.\(UUID().uuidString)", attributes: .concurrent)
       for command in commands {
         queue.async {
           command.run(environment, projection)
