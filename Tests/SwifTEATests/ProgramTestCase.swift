@@ -115,7 +115,6 @@ final class ProgramTestCase: XCTestCase {
     XCTAssertEqual(2, program.read())
   }
 
-
   func testSubscibeProvidesSubsequentValues() {
     let expectation = XCTestExpectation(description: "subscription delivered")
     var state: Int = -1

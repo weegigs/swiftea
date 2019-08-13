@@ -53,6 +53,5 @@ let divideReducer = { (state: inout Int, message: MathEvent) -> Void in
   state /= factor
 }
 
-let reducer = incrementReducer <> decrementReducer <> multiplyReducer <> divideReducer
-
-let math: MessageHandler<Any, Int, MathEvent> = MessageHandler(reducer: reducer)
+typealias MathHandler = MessageHandler<Any, Int, MathEvent>
+let math: MathHandler = .reducer(incrementReducer, decrementReducer, multiplyReducer, divideReducer)

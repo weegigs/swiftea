@@ -64,7 +64,12 @@ public final class Store<Environment, Model, Message>: ObservableObject {
 
 #if DEBUG
 
-  let stringProgram = Program<[String: Any], [String], String>(initial: ["Hello World"], environment: [:], handler: MessageHandler { state, message in state.append(message); return .none })
+  let stringProgram = Program<[String: Any], [String], String>(
+    initial: ["Hello World"],
+    environment: [:],
+    handler: .reducer { state, message in state.append(message) }
+  )
+
   let stringStore = Store(program: stringProgram)
 
 #endif
