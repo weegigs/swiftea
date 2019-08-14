@@ -57,7 +57,7 @@ public final class Program<Environment, State, Message>: Publisher {
     handler: MessageHandler<Environment, State, Message>
   ) {
     updates = DispatchQueue(label: "com.weegigs.dispatcher-\(UUID().uuidString)", attributes: .concurrent)
-    effects = DispatchQueue(label: "\(updates.label).effects", attributes: .concurrent)
+    effects = DispatchQueue(label: "\(updates.label).commands", attributes: .concurrent)
 
     self.state = CurrentValueSubject(state)
     self.environment = environment

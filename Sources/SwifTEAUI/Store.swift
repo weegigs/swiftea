@@ -62,9 +62,22 @@ public final class Store<Environment, Model, Message>: ObservableObject {
   }
 }
 
+public extension Store.Dispatcher {
+  func send<E, M>(_ command: SwifTEA.Command<E, M>) {
+    let cmd: SwifTEA.Command<Environment, Message> = command.lift()
+    
+    send(cmd)
+  }
+}
+
 #if DEBUG
 
-  let stringProgram = Program<[String: Any], [String], String>(initial: ["Hello World"], environment: [:], handler: MessageHandler { state, message in state.append(message); return .none })
+  let stringProgram = Program<[String: Any], [String], String>(
+    initial: ["Hello World"],
+    environment: [:],
+    handler: .reducer { state, message in state.append(message) }
+  )
+
   let stringStore = Store(program: stringProgram)
 
 #endif
