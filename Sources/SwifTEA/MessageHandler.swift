@@ -208,21 +208,7 @@ public extension MessageHandler {
       let result = self.run(state: &value, message: msg)
       state[keyPath: path] = value
 
-      return Command<E, M>(effect: { environment, publish in
-        guard let environment = environment as? Environment else {
-          fatalError("environment \(type(of: E.self)) cant be converted to \(Environment.self)")
-        }
-
-        let send = { (message: Message) -> Void in
-          guard let message = message as? M else {
-            fatalError("message \(type(of: Message.self)) cant be converted to \(M.self)")
-          }
-
-          publish(message)
-        }
-
-        result.run(environment, send)
-      })
+      return result.lift()
     })
   }
 }
