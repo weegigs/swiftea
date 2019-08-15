@@ -1,5 +1,7 @@
 # SwifTEA
 
+[![Build status](https://badge.buildkite.com/e09f9a2d6ef9d2393b23b1cc4d291cf844ec59198b1d3a3ca2.svg)](https://buildkite.com/weegigs/swiftea)
+
 SwifTEA is a small implementation of  the **Model** and **Update** aspects of [**TEA**](https://guide.elm-lang.org/architecture/).
 
 `SwifTEA` has a companion library `SwifTEAUI` which provides integration components for `SwiftUI`
